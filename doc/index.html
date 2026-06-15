@@ -188,6 +188,46 @@
     }
     .version-card-deprecated .version-token code { color: #64748b; }
 
+    .status-list {
+      background: #fff;
+      border: 1px solid #fed7aa;
+      border-left: 4px solid #f97316;
+      border-radius: .75rem;
+      padding: .5rem 1.5rem;
+    }
+    .status-item {
+      display: flex;
+      align-items: flex-start;
+      gap: .85rem;
+      padding: .9rem 0;
+    }
+    .status-item + .status-item {
+      border-top: 1px solid #ffedd5;
+    }
+    .status-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: .5rem;
+      background: #ffedd5;
+      color: #9a3412;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .status-content h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 0 0 .2rem;
+    }
+    .status-content p {
+      font-size: .87rem;
+      color: #64748b;
+      margin: 0;
+    }
+
     .doc-card-todo {
       border-style: dashed;
       background: #fafafa;
@@ -258,6 +298,26 @@
     </div>
   </div>
 
+  <!-- Aktuálně -->
+  <div class="hub-section">
+    <div class="hub-section-title">Aktuálně</div>
+    <div class="status-list">
+      <div class="status-item">
+        <div class="status-icon"><i class="bi bi-arrow-left-right"></i></div>
+        <div class="status-content">
+          <h4>Přesun na nový Google účet</h4>
+          <p>Kvůli security musíme vyřešit přechod na jiný účet, kde budou zveřejněné scripty.</p>
+        </div>
+      </div>
+      <div class="status-item">
+        <div class="status-icon"><i class="bi bi-patch-check"></i></div>
+        <div class="status-content">
+          <h4>Dokončujeme proces verifikace v6.0.0</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Základní rozcestník -->
   <div class="hub-section">
     <div class="hub-section-title">Základní rozcestník</div>
@@ -289,21 +349,6 @@
     </div>
   </div>
 
-  <!-- Konvence & Standardy -->
-  <div class="hub-section">
-    <div class="hub-section-title">Konvence &amp; Standardy</div>
-    <div class="row g-3">
-      <div class="col-12 col-sm-6 col-lg-4">
-        <a href="naming_convention.html" class="doc-card">
-          <div class="card-icon icon-purple"><i class="bi bi-type"></i></div>
-          <h3>Naming Convention</h3>
-          <p>Jednotné pojmenování v Google Cloud: projekt (Google Looker Studio - v 6xx) a Project ID (gds-6xx).</p>
-          <span class="card-tag tag-overview">Konvence</span>
-        </a>
-      </div>
-    </div>
-  </div>
-
   <!-- Přehled -->
   <div class="hub-section">
     <div class="hub-section-title">Přehled</div>
@@ -318,10 +363,10 @@
       </div>
       <div class="col-12 col-sm-6 col-lg-4">
         <div class="doc-card doc-card-todo">
-          <div class="card-icon icon-blue"><i class="bi bi-diagram-3"></i></div>
-          <h3>Architektura</h3>
-          <p>Schéma toku dat: Sklik API → konektor → Looker Studio. Autentizace a limity.</p>
-          <span class="card-tag tag-todo">TODO</span>
+          <div class="card-icon icon-dark"><i class="bi bi-hourglass-split"></i></div>
+          <h3>Připravujeme</h3>
+          <p>Další kapitoly dokumentace se připravují a budou postupně doplňovány.</p>
+          <span class="card-tag tag-todo">Brzy</span>
         </div>
       </div>
       <div class="col-12 col-sm-6 col-lg-4">
@@ -370,6 +415,14 @@
   <div class="hub-section">
     <div class="hub-section-title">Vývoj</div>
     <div class="row g-3">
+      <div class="col-12 col-sm-6 col-lg-4">
+        <a href="naming_convention.html" class="doc-card">
+          <div class="card-icon icon-purple"><i class="bi bi-type"></i></div>
+          <h3>Naming Convention</h3>
+          <p>Jednotné pojmenování v Google Cloud (projekt, Project ID) a název aplikace v Apps Scriptu.</p>
+          <span class="card-tag tag-dev">Vývoj</span>
+        </a>
+      </div>
       <div class="col-12 col-sm-6 col-lg-4">
         <div class="doc-card doc-card-todo">
           <div class="card-icon icon-purple"><i class="bi bi-code-slash"></i></div>
