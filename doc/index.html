@@ -234,6 +234,27 @@
       border-left: 4px solid #94a3b8;
       border-radius: .75rem;
       padding: .5rem 1.5rem;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: box-shadow .15s, border-color .15s;
+    }
+    a.upcoming-list:hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, .08);
+      border-color: #cbd5e1;
+      border-left-color: #475569;
+      color: inherit;
+      text-decoration: none;
+    }
+    .upcoming-list-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: .9rem;
+      padding-bottom: .25rem;
+      color: #475569;
+      font-size: .85rem;
+      font-weight: 600;
     }
     .upcoming-item {
       display: flex;
@@ -402,12 +423,12 @@
         </a>
       </div>
       <div class="col-12 col-sm-6 col-lg-4">
-        <div class="doc-card doc-card-todo">
+        <a href="pripravujeme.html" class="doc-card">
           <div class="card-icon icon-dark"><i class="bi bi-hourglass-split"></i></div>
           <h3>Připravujeme</h3>
-          <p>Další kapitoly dokumentace se připravují a budou postupně doplňovány.</p>
-          <span class="card-tag tag-todo">Brzy</span>
-        </div>
+          <p>Přehled chystaných změn: přejmenování na GDS, verifikace v7.0.0, refaktor aplikace.</p>
+          <span class="card-tag tag-overview">Připravujeme</span>
+        </a>
       </div>
       <div class="col-12 col-sm-6 col-lg-4">
         <a href="changelog.html" class="doc-card">
@@ -539,7 +560,7 @@
   <!-- Připravujeme -->
   <div class="hub-section">
     <div class="hub-section-title">Připravujeme</div>
-    <div class="upcoming-list">
+    <a href="pripravujeme.html" class="upcoming-list">
       <div class="upcoming-item">
         <div class="upcoming-icon"><i class="bi bi-tag"></i></div>
         <div class="upcoming-content">
@@ -559,7 +580,11 @@
           <h4>Refaktor aplikace</h4>
         </div>
       </div>
-    </div>
+      <div class="upcoming-list-header">
+        <span>Otevřít detailní stránku</span>
+        <i class="bi bi-arrow-right"></i>
+      </div>
+    </a>
   </div>
 
 </div>
