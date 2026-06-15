@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="logo.png">
+  <title>Lokální vývoj – Sklik Konektor</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body { background: #f8f9fa; padding-top: 64px; }
+    .hub-nav { background: #1e293b; }
+    main { max-width: 880px; margin: 0 auto; }
+    h1 { font-weight: 700; color: #0f172a; margin-bottom: .5rem; }
+    .lead-sub { color: #64748b; margin-bottom: 2rem; font-size: 1.05rem; }
+
+    .content-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: .9rem;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, .03);
+    }
+    .content-card h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 1rem;
+      padding-bottom: .65rem;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+    }
+    .content-card h2 i { color: #0d6efd; font-size: 1.1rem; }
+    .content-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-top: 1.4rem;
+      margin-bottom: .5rem;
+    }
+    .content-card h3:first-child { margin-top: 0; }
+    .content-card p { color: #334155; margin-bottom: .75rem; }
+    .content-card ul, .content-card ol { padding-left: 1.3rem; }
+    .content-card li {
+      margin-bottom: .4rem;
+      color: #334155;
+    }
+
+    .step-list {
+      counter-reset: step;
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+    .step-list > li {
+      counter-increment: step;
+      position: relative;
+      padding-left: 3rem;
+      padding-bottom: 1.4rem;
+      margin-bottom: 1.4rem;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .step-list > li:last-child {
+      border-bottom: 0;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    .step-list > li::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1e40af, #0d6efd);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: .85rem;
+    }
+    .step-list > li > strong {
+      display: block;
+      font-size: 1rem;
+      color: #0f172a;
+      margin-bottom: .35rem;
+    }
+
+    pre.code-block {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: .5rem;
+      padding: .75rem 1rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: .85rem;
+      margin: .5rem 0 .25rem;
+      overflow-x: auto;
+    }
+    code { background: #f1f5f9; padding: .1em .35em; border-radius: .25rem; color: #0f172a; font-size: .88em; }
+    pre.code-block code { background: transparent; padding: 0; color: inherit; font-size: inherit; }
+
+    .alert-info-light {
+      background: #e0f2fe;
+      border: 1px solid #bae6fd;
+      color: #075985;
+      border-radius: .5rem;
+      padding: .85rem 1rem;
+      font-size: .9rem;
+      margin-top: .5rem;
+    }
+    .alert-tip {
+      background: #fef9c3;
+      border: 1px solid #fde68a;
+      color: #854d0e;
+      border-radius: .5rem;
+      padding: .85rem 1rem;
+      font-size: .9rem;
+      margin-top: .5rem;
+    }
+
+    a { color: #0d6efd; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark hub-nav fixed-top shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="index.html">
+      <i class="bi bi-plug-fill me-2"></i>Sklik Konektor
+    </a>
+    <a href="index.html" class="btn btn-sm btn-outline-light ms-auto">
+      <i class="bi bi-arrow-left me-1"></i>Rozcestník
+    </a>
+  </div>
+</nav>
+
+<div class="container py-4">
+  <main>
+
+    <h1><i class="bi bi-code-slash me-2 text-primary"></i>Lokální vývoj</h1>
+    <p class="lead-sub">
+      Pro vývoj v Google Apps Script (GAS) mimo webový editor přímo ve vašem počítači (např. v editoru <strong>Cursor</strong> nebo <strong>VS Code</strong>) se používá nástroj <code>clasp</code> (Command Line Apps Script Projects). Díky claspu můžete kód psát lokálně, využívat našeptávání, linting a následně jej jedním příkazem nahrát do Google cloudu.
+    </p>
+
+    <section class="content-card">
+      <h2><i class="bi bi-list-ol"></i>Postup nastavení (krok za krokem)</h2>
+
+      <ol class="step-list">
+        <li>
+          <strong>Instalace Node.js</strong>
+          <p><code>clasp</code> běží na platformě Node.js. Pokud jej ještě nemáte, stáhněte si LTS verzi z <a href="https://nodejs.org" target="_blank" rel="noopener">nodejs.org</a>.</p>
+        </li>
+        <li>
+          <strong>Instalace Clasp</strong>
+          <p>Otevřete terminál (příkazový řádek) a nainstalujte <code>clasp</code> globálně pomocí <code>npm</code>:</p>
+          <pre class="code-block"><code>npm install -g @google/clasp</code></pre>
+        </li>
+        <li>
+          <strong>Přihlášení k vašemu Google účtu</strong>
+          <p>V terminálu spusťte příkaz:</p>
+          <pre class="code-block"><code>clasp login</code></pre>
+          <p>Otevře se prohlížeč, kde potvrdíte přístup ke svým skriptům.</p>
+        </li>
+        <li>
+          <strong>Povolení Apps Script API</strong>
+          <p>Abyste mohli se skripty pracovat přes API, musíte jej povolit:</p>
+          <ul>
+            <li>Přejděte na <a href="https://script.google.com/home/usersettings" target="_blank" rel="noopener">script.google.com/home/usersettings</a>.</li>
+            <li>Zapněte možnost <strong>Google Apps Script API</strong> na „Zapnuto".</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Stažení existujícího projektu (nebo vytvoření nového)</strong>
+          <ul>
+            <li><strong>Stažení:</strong> Najděte ID svého skriptu (v URL adrese editoru skriptu: <code>script.google.com/d/ID_SKRIPTU/edit</code>).</li>
+          </ul>
+          <pre class="code-block"><code>clasp clone &lt;ID_SKRIPTU&gt;</code></pre>
+          <ul>
+            <li><strong>Nový projekt:</strong> Vytvořte složku a v ní:</li>
+          </ul>
+          <pre class="code-block"><code>clasp create --title "MujProjekt" --type standalone</code></pre>
+        </li>
+      </ol>
+    </section>
+
+    <section class="content-card">
+      <h2><i class="bi bi-cursor-text"></i>Jak pracovat v Cursoru</h2>
+      <p>
+        Jakmile máte projekt naklonovaný, otevřete složku v Cursoru. Uvidíte soubory <code>.gs</code>. Cursor nyní bude automaticky nabízet našeptávání.
+      </p>
+
+      <h3>Klíčové příkazy pro vývoj</h3>
+      <ul>
+        <li><code>clasp push</code> – nahraje lokální soubory do Google Apps Script projektu.</li>
+        <li><code>clasp pull</code> – stáhne aktuální verzi z Google cloudu k vám do počítače.</li>
+        <li><code>clasp status</code> – vypíše seznam souborů, které se chystají k nahrání.</li>
+      </ul>
+    </section>
+
+    <section class="content-card">
+      <h2><i class="bi bi-lightbulb"></i>Tip pro profíky: Typování (IntelliSense)</h2>
+      <p>
+        Aby vám Cursor správně napovídal metody jako <code>SpreadsheetApp</code> nebo <code>DriveApp</code>, přidejte si definice typů:
+      </p>
+      <ol>
+        <li>V terminálu ve složce projektu spusťte:</li>
+      </ol>
+      <pre class="code-block"><code>npm install @types/google-apps-script</code></pre>
+      <ol start="2">
+        <li>Cursor nyní bude schopen analyzovat metody GAS a poskytne vám plnohodnotné našeptávání kódu (IntelliSense), jako byste psali v TypeScriptu.</li>
+      </ol>
+
+      <div class="alert-tip">
+        <i class="bi bi-info-circle me-1"></i>
+        <strong>Upozornění:</strong> Google Apps Script ve výchozím stavu používá soubory <code>.gs</code> (Google Script). Pokud chcete psát v čistém TypeScriptu, <code>clasp</code> podporuje automatickou konverzi. Stačí přejmenovat soubory na <code>.ts</code> a <code>clasp</code> je při příkazu <code>push</code> automaticky přeloží do JavaScriptu.
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
