@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ověření domény – Sklik Konektor</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body { background: #f8f9fa; padding-top: 64px; }
+    .hub-nav { background: #1e293b; }
+    main { max-width: 880px; margin: 0 auto; }
+    h1 { font-weight: 700; color: #0f172a; margin-bottom: .5rem; }
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-top: 2.25rem;
+      margin-bottom: .75rem;
+      padding-bottom: .4rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .lead-sub { color: #64748b; margin-bottom: 2rem; }
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-bottom: 1.5rem;
+    }
+    .meta-chip {
+      font-size: .8rem;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 999px;
+      padding: .25rem .8rem;
+      color: #475569;
+    }
+    .meta-chip i { margin-right: .35rem; color: #0d6efd; }
+    .meta-chip a { color: #0d6efd; text-decoration: none; }
+    .meta-chip a:hover { text-decoration: underline; }
+    .token-box {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: .5rem;
+      padding: 1rem 1.2rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: .85rem;
+      word-break: break-all;
+      position: relative;
+    }
+    .token-box .label {
+      display: block;
+      font-size: .7rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin-bottom: .35rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    .alert-info-light {
+      background: #e0f2fe;
+      border: 1px solid #bae6fd;
+      color: #075985;
+      border-radius: .5rem;
+      padding: .9rem 1.1rem;
+      font-size: .9rem;
+    }
+    ol li, ul li { margin-bottom: .35rem; }
+    code { background: #f1f5f9; padding: .1em .35em; border-radius: .25rem; color: #0f172a; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark hub-nav fixed-top shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="../index.html">
+      <i class="bi bi-plug-fill me-2"></i>Sklik Konektor
+    </a>
+    <a href="../index.html" class="btn btn-sm btn-outline-light ms-auto">
+      <i class="bi bi-arrow-left me-1"></i>Rozcestník
+    </a>
+  </div>
+</nav>
+
+<div class="container py-4">
+  <main>
+
+    <h1><i class="bi bi-patch-check me-2 text-primary"></i>Ověření domény</h1>
+    <p class="lead-sub">Postup pro prokázání vlastnictví domény <code>sklik.cz</code> u Googlu — nezbytný krok pro publikaci komunitního konektoru v Looker Studiu.</p>
+
+    <div class="meta-row">
+      <span class="meta-chip">
+        <i class="bi bi-link-45deg"></i>
+        Ticket:
+        <a href="https://youtrack.seznam.net/issue/TP-12681/Nasadit-overeni-domeny-pro-google" target="_blank" rel="noopener">TP-12681</a>
+      </span>
+      <span class="meta-chip">
+        <i class="bi bi-globe2"></i>
+        Doména: <code>sklik.cz</code>
+      </span>
+      <span class="meta-chip">
+        <i class="bi bi-tag"></i>
+        Verze konektoru: <code>LS 6.0.0</code>
+      </span>
+    </div>
+
+    <h2>Proč ověření potřebujeme</h2>
+    <p>
+      Aby bylo možné publikovat komunitní konektor pro Looker Studio pod oficiální značkou Sklik, musí Google ověřit, že vlastníme doménu <code>sklik.cz</code>. Bez ověření Google zobrazuje u konektoru varování „neověřený vývojář" a omezuje jeho dostupnost.
+    </p>
+
+    <h2>Verifikační soubor pro LS 6.0.0</h2>
+    <p>Google vyžaduje, aby na rootu domény <code>sklik.cz</code> byl dostupný verifikační soubor s následujícím názvem:</p>
+
+    <div class="token-box mb-3">
+      <span class="label">Název souboru</span>
+      google-site-verification=4kRvPMmSCJ6fYEYQIqAcYrtV6oVU_SRLE-_WJ0-lVd4.txt
+    </div>
+
+    <div class="alert-info-light mb-3">
+      <i class="bi bi-info-circle me-1"></i>
+      Soubor musí být dostupný přes HTTPS na adrese <code>https://sklik.cz/google-site-verification=4kRvPMmSCJ6fYEYQIqAcYrtV6oVU_SRLE-_WJ0-lVd4.txt</code> a vracet HTTP 200.
+    </div>
+
+    <h2>Postup nasazení</h2>
+    <ol>
+      <li>Verifikační soubor s výše uvedeným názvem umístit do rootu webu <code>sklik.cz</code> tak, aby byl veřejně dostupný přes HTTPS.</li>
+      <li>Ověřit, že soubor vrací HTTP 200 a není přesměrován (<code>curl -I https://sklik.cz/google-site-verification=4kRvPMmSCJ6fYEYQIqAcYrtV6oVU_SRLE-_WJ0-lVd4.txt</code>).</li>
+      <li>V Google Search Console / Looker Studio spustit verifikaci domény.</li>
+      <li>Po úspěšném ověření soubor <strong>neodstraňovat</strong> — Google ověření periodicky obnovuje.</li>
+    </ol>
+
+    <h2>Změna při vydání nové verze konektoru</h2>
+    <p>
+      Verifikační token je vázaný na konkrétní verzi konektoru. Při vydání nové verze (např. <code>LS 6.1.0</code>) Google vygeneruje nový soubor a starý je nutné nahradit. Aktuální token pro nasazenou verzi je vždy uveden výše.
+    </p>
+
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
