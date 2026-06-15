@@ -228,6 +228,46 @@
       margin: 0;
     }
 
+    .upcoming-list {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #94a3b8;
+      border-radius: .75rem;
+      padding: .5rem 1.5rem;
+    }
+    .upcoming-item {
+      display: flex;
+      align-items: flex-start;
+      gap: .85rem;
+      padding: .9rem 0;
+    }
+    .upcoming-item + .upcoming-item {
+      border-top: 1px solid #f1f5f9;
+    }
+    .upcoming-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: .5rem;
+      background: #f1f5f9;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .upcoming-content h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 0 0 .2rem;
+    }
+    .upcoming-content p {
+      font-size: .87rem;
+      color: #64748b;
+      margin: 0;
+    }
+
     .doc-card-todo {
       border-style: dashed;
       background: #fafafa;
@@ -499,13 +539,24 @@
   <!-- Připravujeme -->
   <div class="hub-section">
     <div class="hub-section-title">Připravujeme</div>
-    <div class="row g-3">
-      <div class="col-12">
-        <div class="doc-card doc-card-todo">
-          <div class="card-icon icon-dark"><i class="bi bi-hourglass-split"></i></div>
-          <h3>Obsah bude doplněn</h3>
-          <p>Další kapitoly dokumentace se připravují a budou postupně doplňovány.</p>
-          <span class="card-tag tag-todo">Brzy</span>
+    <div class="upcoming-list">
+      <div class="upcoming-item">
+        <div class="upcoming-icon"><i class="bi bi-tag"></i></div>
+        <div class="upcoming-content">
+          <h4>Přejmenování na Sklik Google Data Studio connector</h4>
+          <p>Zkráceně <strong>GDS</strong>.</p>
+        </div>
+      </div>
+      <div class="upcoming-item">
+        <div class="upcoming-icon"><i class="bi bi-patch-check"></i></div>
+        <div class="upcoming-content">
+          <h4>Dokončení verifikace na verzi 7.0.0</h4>
+        </div>
+      </div>
+      <div class="upcoming-item">
+        <div class="upcoming-icon"><i class="bi bi-arrow-clockwise"></i></div>
+        <div class="upcoming-content">
+          <h4>Refaktor aplikace</h4>
         </div>
       </div>
     </div>
