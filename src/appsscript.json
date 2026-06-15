@@ -1,0 +1,35 @@
+{
+  "timeZone": "Europe/Paris",
+  "exceptionLogging": "STACKDRIVER",
+  "webapp": {
+    "executeAs": "USER_ACCESSING",
+    "access": "ANYONE"
+  },
+  "oauthScopes": [
+    "https://www.googleapis.com/auth/script.external_request"
+  ],
+  "urlFetchWhitelist": [
+    "https://api.sklik.cz/drak/"
+  ],
+  "dataStudio": {
+    "name": "Sklik LS connector v6.0.0",
+    "logoUrl": "https://napoveda.sklik.cz/wp-content/uploads/2024/05/sklik.jpg",
+    "company": "Seznam a.s.",
+    "companyUrl": "https://sklik.cz",
+    "addonUrl": "https://napoveda.sklik.cz/google-looker-studio/",
+    "supportUrl": "https://napoveda.sklik.cz/casto-kladene-dotazy/kontaktni-formular/",
+    "description": "Konektor sloužící k propojení Google Looker Studio s reklamním systémem Sklik. Copyright (C) 2018 Seznam.cz, a.s.",
+    "shortDescription": "Load data from Sklik API and show in LS",
+    "sources": [
+      "SKLIK"
+    ], 
+    "authType": [
+      "NONE"
+    ],
+    "feeType": [
+      "FREE"
+    ],
+    "privacyPolicyUrl": "https://napoveda.sklik.cz/google-looker-studio/",
+    "termsOfServiceUrl": "https://napoveda.sklik.cz/google-looker-studio/"
+  }
+}
