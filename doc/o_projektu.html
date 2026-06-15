@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="logo.png">
+  <title>O projektu – Sklik Konektor</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body { background: #f8f9fa; padding-top: 64px; }
+    .hub-nav { background: #1e293b; }
+    main { max-width: 880px; margin: 0 auto; }
+    h1 { font-weight: 700; color: #0f172a; margin-bottom: .5rem; }
+    .lead-sub { color: #64748b; margin-bottom: 2rem; font-size: 1.05rem; }
+
+    .content-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: .9rem;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, .03);
+    }
+    .content-card h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 1rem;
+      padding-bottom: .65rem;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+    }
+    .content-card h2 i {
+      color: #0d6efd;
+      font-size: 1.1rem;
+    }
+    .content-card h3 {
+      font-size: .95rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-top: 1.2rem;
+      margin-bottom: .5rem;
+    }
+    .content-card h3:first-child { margin-top: 0; }
+    .content-card p { color: #334155; margin-bottom: .75rem; }
+    .content-card ul, .content-card ol { padding-left: 1.3rem; }
+    .content-card ul li, .content-card ol li {
+      margin-bottom: .35rem;
+      color: #334155;
+    }
+
+    .flow {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: .55rem;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: .5rem;
+      padding: .85rem 1rem;
+      margin: .25rem 0 1rem;
+      font-size: .9rem;
+    }
+    .flow-node {
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      border-radius: .35rem;
+      padding: .3rem .7rem;
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .flow-arrow { color: #94a3b8; font-weight: 700; }
+
+    .entity-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: .55rem;
+      margin: .25rem 0 .75rem;
+    }
+    .entity-chip {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: .5rem;
+      padding: .55rem .8rem;
+      font-size: .85rem;
+    }
+    .entity-chip strong {
+      color: #0f172a;
+      display: block;
+      font-weight: 700;
+      margin-bottom: .1rem;
+    }
+    .entity-chip span { color: #64748b; }
+
+    .badge-pill {
+      display: inline-block;
+      background: #e0f2fe;
+      color: #075985;
+      font-size: .72rem;
+      font-weight: 600;
+      padding: .2rem .6rem;
+      border-radius: 999px;
+      margin: .1rem .25rem .1rem 0;
+    }
+    .badge-pill-muted {
+      background: #f1f5f9;
+      color: #475569;
+    }
+
+    code { background: #f1f5f9; padding: .1em .35em; border-radius: .25rem; color: #0f172a; font-size: .88em; }
+
+    .alert-info-light {
+      background: #e0f2fe;
+      border: 1px solid #bae6fd;
+      color: #075985;
+      border-radius: .5rem;
+      padding: .8rem 1rem;
+      font-size: .88rem;
+      margin-top: .5rem;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark hub-nav fixed-top shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="index.html">
+      <i class="bi bi-plug-fill me-2"></i>Sklik Konektor
+    </a>
+    <a href="index.html" class="btn btn-sm btn-outline-light ms-auto">
+      <i class="bi bi-arrow-left me-1"></i>Rozcestník
+    </a>
+  </div>
+</nav>
+
+<div class="container py-4">
+  <main>
+
+    <h1><i class="bi bi-info-circle me-2 text-primary"></i>O projektu</h1>
+    <p class="lead-sub">
+      Sklik Konektor je community connector pro <strong>Google Looker Studio</strong> (dříve Google Data Studio), který umožňuje vizualizovat data z reklamního systému <strong>Sklik</strong> přímo v reportech a dashboardech Googlu.
+    </p>
+
+    <section class="content-card">
+      <h2><i class="bi bi-bullseye"></i>Účel</h2>
+      <p>
+        Konektor řeší propojení mezi Skliku Drak API a Looker Studiem. Inzerentům a analytikům umožňuje pracovat s daty Skliku stejně jako s ostatními zdroji v Looker Studiu — vytvářet vlastní reporty, kombinovat data s dalšími systémy, sdílet dashboardy a vizualizovat výkonnost reklam.
+      </p>
+      <p class="mb-0">
+        Projekt je vyvíjen pod hlavičkou <strong>Seznam.cz, a.s.</strong> jako open-source nástroj (LGPL 2.1+).
+      </p>
+    </section>
+
+    <section class="content-card">
+      <h2><i class="bi bi-diagram-3"></i>Architektura</h2>
+      <p>Konektor běží jako <strong>Google Apps Script</strong> webová aplikace, která zprostředkovává tok dat mezi Sklik API a Looker Studiem:</p>
+      <div class="flow">
+        <span class="flow-node"><i class="bi bi-database me-1"></i>Sklik API <code>api.sklik.cz/drak/</code></span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-node"><i class="bi bi-cpu me-1"></i>Apps Script konektor</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-node"><i class="bi bi-bar-chart-line me-1"></i>Looker Studio</span>
+      </div>
+      <p class="mb-0">
+        Pro Looker Studio konektor implementuje standardní funkce <code>getConfig</code>, <code>getSchema</code>, <code>getData</code> a <code>getAuthType</code>. Sklik volá přes JSON-RPC endpoint <code>https://api.sklik.cz/drak/json/&lt;method&gt;</code>.
+      </p>
+    </section>
+
+    <section class="content-card">
+      <h2><i class="bi bi-grid-3x3-gap"></i>Entity (reporty)</h2>
+      <p>Konektor podporuje 7 typů reportů — pro každou entitu Sklik účtu lze načítat dimenze i metriky:</p>
+      <div class="entity-grid">
+        <div class="entity-chip"><strong>client</strong><span>data na úrovni účtu</span></div>
+        <div class="entity-chip"><strong>campaigns</strong><span>kampaně</span></div>
+        <div class="entity-chip"><strong>groups</strong><span>sestavy (ad groups)</span></div>
+        <div class="entity-chip"><strong>ads</strong><span>textové reklamy</span></div>
+        <div class="entity-chip"><strong>banners</strong><span>bannerové reklamy</span></div>
+        <div class="entity-chip"><strong>keywords</strong><span>klíčová slova</span></div>
+        <div class="entity-chip"><strong>productsets</strong><span>produktové sety</span></div>
+      </div>
+      <p class="mb-0">
+        Typ reportu se vybírá automaticky podle dimenzí požadovaných v Looker Studiu (prefix <code>cgc_</code>, <code>clc_</code>, <code>goc_</code>, <code>adc_</code>, <code>add_</code>, <code>bnc_</code>, <code>kwc_</code>, <code>pic_</code> v názvu sloupce).
+      </p>
+    </section>
+
+    <section class="content-card">
+      <h2><i class="bi bi-calendar-range"></i>Granularita</h2>
+      <p>Data lze zobrazovat ve více časových granularitách:</p>
+      <p class="mb-0">
+        <span class="badge-pill">Total</span>
+        <span class="badge-pill">Daily</span>
+        <span class="badge-pill">Weekly</span>
+        <span class="badge-pill">Monthly</span>
+        <span class="badge-pill">Quarterly</span>
+        <span class="badge-pill">Yearly</span>
+      </p>
+      <div class="alert-info-light">
+        <i class="bi bi-info-circle me-1"></i>
+        Granularita se vybírá automaticky podle dimenze v reportu (např. <code>date</code>, <code>week</code>, <code>month</code>). Chybějící časové úseky API doplňuje nulovými řádky.
+      </div>
+    </section>
+
+    <section class="content-card">
+      <h2><i class="bi bi-sliders"></i>Konfigurace</h2>
+      <p>Uživatel při přidání konektoru v Looker Studiu vyplňuje:</p>
+      <ul>
+        <li><strong>Token</strong> – API klíč ze Skliku (Nastavení → Získat přístup k API)</li>
+        <li><strong>UserId</strong> – ID účtu, který se má sledovat</li>
+        <li><strong>Typy kampaní</strong> – filtr: combined, video, context, fulltext, product, zbozi, simple</li>
+        <li><strong>ID kampaní</strong> – konkrétní kampaně k načtení (volitelné)</li>
+        <li><strong>ID sestav</strong> – konkrétní sestavy k načtení (volitelné)</li>
+        <li><strong>ID kampaní pro klíčová slova</strong> – omezení zdroje keywords reportu</li>
+        <li><strong>Zahrnout entity bez statistik</strong> – zapnutí prázdných řádků</li>
+        <li><strong>Logování / Debug logování</strong> – Cloud Logging pro diagnostiku</li>
+      </ul>
+      <p class="mb-0 small text-muted">
+        Autentizace probíhá tokenem v konfiguraci konektoru — <code>authType: NONE</code> z pohledu Looker Studia, fakticky token-based login proti Sklik API (<code>client.loginByToken</code>).
+      </p>
+    </section>
+
+    <section class="content-card">
+      <h2><i class="bi bi-exclamation-triangle"></i>Limity</h2>
+      <ul class="mb-0">
+        <li>Maximálně <strong>5 000 záznamů</strong> na jeden API call (pro time-series děleno počtem časových jednotek)</li>
+        <li>Maximálně <strong>15 000 klíčových slov</strong> – u větších účtů je nutné omezit přes <em>ID kampaní pro klíčová slova</em></li>
+        <li>Při selhání API volání proběhnou až <strong>3 retry pokusy</strong> před zobrazením chyby uživateli</li>
+      </ul>
+    </section>
+
+    <section class="content-card">
+      <h2><i class="bi bi-folder2-open"></i>Struktura zdrojového kódu</h2>
+      <p>Apps Script projekt je rozdělen do souborů podle entit a odpovědnosti:</p>
+      <ul class="mb-0">
+        <li><code>main.js</code> – vstupní body Looker Studio konektoru (<code>getSchema</code>, <code>getData</code>, <code>getAuthType</code>, <code>isAdminUser</code>)</li>
+        <li><code>config.js</code> – <code>getConfig</code>, definice konfiguračních polí</li>
+        <li><code>schema.js</code> – schéma sloupců (dimenze, metriky, granularita)</li>
+        <li><code>root.js</code> – orchestrace: parsování requestu, výběr reportu, volání API, retry logika</li>
+        <li><code>client.js</code>, <code>campaigns.js</code>, <code>groups.js</code>, <code>ads.js</code>, <code>banners.js</code>, <code>keywords.js</code>, <code>productsets.js</code> – třídy pro jednotlivé entity</li>
+        <li><code>datacore.js</code> – sdílená logika pro zpracování dat z API</li>
+        <li><code>logger.js</code> – logování do Cloud Logging</li>
+        <li><code>tests.js</code> – testy</li>
+        <li><code>appsscript.json</code> – manifest (oauth scopes, Looker Studio metadata, URL whitelist)</li>
+      </ul>
+    </section>
+
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
