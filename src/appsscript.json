@@ -22,7 +22,7 @@
     "shortDescription": "Load data from Sklik API and show in LS",
     "sources": [
       "SKLIK"
-    ], 
+    ],
     "authType": [
       "NONE"
     ],
@@ -31,5 +31,6 @@
     ],
     "privacyPolicyUrl": "https://napoveda.sklik.cz/google-looker-studio/",
     "termsOfServiceUrl": "https://napoveda.sklik.cz/google-looker-studio/"
-  }
+  },
+  "runtimeVersion": "V8"
 }

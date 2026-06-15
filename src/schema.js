@@ -1056,7 +1056,7 @@ var Schema = function (config) {
     {
       isDefault: true,
       name: 'cgc_name',
-      label: 'Kampaň: Název kampaně',
+      label: 'Kampaň: Název',
       dataType: 'STRING',
       semantics: {
         conceptType: 'DIMENSION',
