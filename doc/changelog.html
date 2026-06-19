@@ -23,6 +23,7 @@
       box-shadow: 0 1px 2px rgba(0, 0, 0, .03);
     }
     .changelog-entry.current { border-color: #22c55e; border-width: 2px; background: #f0fdf4; }
+    .changelog-entry.limit { border-color: #f59e0b; border-width: 2px; background: #fffbeb; }
     .changelog-entry.deprecated { background: #f8fafc; border-style: dashed; }
 
     .entry-header {
@@ -50,6 +51,7 @@
       gap: .3rem;
     }
     .badge-current     { background: #dcfce7; color: #166534; }
+    .badge-limit       { background: #fef3c7; color: #92400e; }
     .badge-deprecated  { background: #f1f5f9; color: #64748b; }
 
     .entry-date {
@@ -97,7 +99,7 @@
   <main>
 
     <h1><i class="bi bi-journal-text me-2 text-primary"></i>Changelog</h1>
-    <p class="lead-sub">Historie verzí Sklik konektoru pro Looker Studio (dříve Google Data Studio).</p>
+    <p class="lead-sub">Historie verzí Sklik konektoru pro Google Data Studio.</p>
 
     <div class="changelog-entry current">
       <div class="entry-header">
@@ -108,11 +110,26 @@
       </div>
       <div class="entry-body">
         <h4>Deployment ID</h4>
-        <p><code>AKfycbxC7y9kzVt601B8c0NnT56X4ieUZCyjM_PwuuvMO3n6HUxEvDt3GlTdXJJhgFRSTJxn</code></p>
+        <p><code>AKfycbxGidQ6GwyUzHFr4Eb6XYE1DYyvEiztg6fnM1NYoIOOXZjS-JOLysZTVva1LXTcaDAL</code></p>
         <h4>Hlavní změny</h4>
         <ul>
           <li><strong>Opuštění zapisování do Google Drive souborů</strong> – konektor již nezakládá ani neaktualizuje logovací soubory v Google Drive uživatele. Veškeré logování probíhá výhradně přes Cloud Logging v Google Cloud projektu konektoru (omezení potřebných OAuth scopes a zjednodušení verifikace).</li>
         </ul>
+      </div>
+    </div>
+
+    <div class="changelog-entry limit">
+      <div class="entry-header">
+        <h3 class="entry-version">6.0.0</h3>
+        <span class="entry-badge badge-limit">
+          <i class="bi bi-exclamation-triangle-fill"></i> Aktivní — dosažen limit uživatelů
+        </span>
+      </div>
+      <div class="entry-body">
+        <h4>Status</h4>
+        <p>Stále funkční pro stávající uživatele, ale nepřijímá nové připojení — Google deployment dosáhl limitu uživatelů. Nové instalace nasměrovat na aktuální deployment výše.</p>
+        <h4>Deployment ID</h4>
+        <p><code>AKfycbxC7y9kzVt601B8c0NnT56X4ieUZCyjM_PwuuvMO3n6HUxEvDt3GlTdXJJhgFRSTJxn</code></p>
       </div>
     </div>
 

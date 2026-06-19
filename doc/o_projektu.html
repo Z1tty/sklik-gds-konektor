@@ -141,13 +141,13 @@
 
     <h1><i class="bi bi-info-circle me-2 text-primary"></i>O projektu</h1>
     <p class="lead-sub">
-      Sklik Konektor je community connector pro <strong>Google Looker Studio</strong> (dříve Google Data Studio), který umožňuje vizualizovat data z reklamního systému <strong>Sklik</strong> přímo v reportech a dashboardech Googlu.
+      Sklik Konektor je community connector pro <strong>Google Data Studio</strong>, který umožňuje vizualizovat data z reklamního systému <strong>Sklik</strong> přímo v reportech a dashboardech Googlu.
     </p>
 
     <section class="content-card">
       <h2><i class="bi bi-bullseye"></i>Účel</h2>
       <p>
-        Konektor řeší propojení mezi Skliku Drak API a Looker Studiem. Inzerentům a analytikům umožňuje pracovat s daty Skliku stejně jako s ostatními zdroji v Looker Studiu — vytvářet vlastní reporty, kombinovat data s dalšími systémy, sdílet dashboardy a vizualizovat výkonnost reklam.
+        Konektor řeší propojení mezi Skliku Drak API a Google Data Studiem. Inzerentům a analytikům umožňuje pracovat s daty Skliku stejně jako s ostatními zdroji v Google Data Studiu — vytvářet vlastní reporty, kombinovat data s dalšími systémy, sdílet dashboardy a vizualizovat výkonnost reklam.
       </p>
       <p class="mb-0">
         Projekt je vyvíjen pod hlavičkou <strong>Seznam.cz, a.s.</strong> jako open-source nástroj (LGPL 2.1+).
@@ -156,16 +156,16 @@
 
     <section class="content-card">
       <h2><i class="bi bi-diagram-3"></i>Architektura</h2>
-      <p>Konektor běží jako <strong>Google Apps Script</strong> webová aplikace, která zprostředkovává tok dat mezi Sklik API a Looker Studiem:</p>
+      <p>Konektor běží jako <strong>Google Apps Script</strong> webová aplikace, která zprostředkovává tok dat mezi Sklik API a Google Data Studiem:</p>
       <div class="flow">
         <span class="flow-node"><i class="bi bi-database me-1"></i>Sklik API <code>api.sklik.cz/drak/</code></span>
         <span class="flow-arrow">→</span>
         <span class="flow-node"><i class="bi bi-cpu me-1"></i>Apps Script konektor</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-node"><i class="bi bi-bar-chart-line me-1"></i>Looker Studio</span>
+        <span class="flow-node"><i class="bi bi-bar-chart-line me-1"></i>Google Data Studio</span>
       </div>
       <p class="mb-0">
-        Pro Looker Studio konektor implementuje standardní funkce <code>getConfig</code>, <code>getSchema</code>, <code>getData</code> a <code>getAuthType</code>. Sklik volá přes JSON-RPC endpoint <code>https://api.sklik.cz/drak/json/&lt;method&gt;</code>.
+        Pro Google Data Studio konektor implementuje standardní funkce <code>getConfig</code>, <code>getSchema</code>, <code>getData</code> a <code>getAuthType</code>. Sklik volá přes JSON-RPC endpoint <code>https://api.sklik.cz/drak/json/&lt;method&gt;</code>.
       </p>
     </section>
 
@@ -182,7 +182,7 @@
         <div class="entity-chip"><strong>productsets</strong><span>produktové sety</span></div>
       </div>
       <p class="mb-0">
-        Typ reportu se vybírá automaticky podle dimenzí požadovaných v Looker Studiu (prefix <code>cgc_</code>, <code>clc_</code>, <code>goc_</code>, <code>adc_</code>, <code>add_</code>, <code>bnc_</code>, <code>kwc_</code>, <code>pic_</code> v názvu sloupce).
+        Typ reportu se vybírá automaticky podle dimenzí požadovaných v Google Data Studiu (prefix <code>cgc_</code>, <code>clc_</code>, <code>goc_</code>, <code>adc_</code>, <code>add_</code>, <code>bnc_</code>, <code>kwc_</code>, <code>pic_</code> v názvu sloupce).
       </p>
     </section>
 
@@ -205,7 +205,7 @@
 
     <section class="content-card">
       <h2><i class="bi bi-sliders"></i>Konfigurace</h2>
-      <p>Uživatel při přidání konektoru v Looker Studiu vyplňuje:</p>
+      <p>Uživatel při přidání konektoru v Google Data Studiu vyplňuje:</p>
       <ul>
         <li><strong>Token</strong> – API klíč ze Skliku (Nastavení → Získat přístup k API)</li>
         <li><strong>UserId</strong> – ID účtu, který se má sledovat</li>
@@ -217,7 +217,7 @@
         <li><strong>Logování / Debug logování</strong> – Cloud Logging pro diagnostiku</li>
       </ul>
       <p class="mb-0 small text-muted">
-        Autentizace probíhá tokenem v konfiguraci konektoru — <code>authType: NONE</code> z pohledu Looker Studia, fakticky token-based login proti Sklik API (<code>client.loginByToken</code>).
+        Autentizace probíhá tokenem v konfiguraci konektoru — <code>authType: NONE</code> z pohledu Google Data Studia, fakticky token-based login proti Sklik API (<code>client.loginByToken</code>).
       </p>
     </section>
 
@@ -234,7 +234,7 @@
       <h2><i class="bi bi-folder2-open"></i>Struktura zdrojového kódu</h2>
       <p>Apps Script projekt je rozdělen do souborů podle entit a odpovědnosti:</p>
       <ul class="mb-0">
-        <li><code>main.js</code> – vstupní body Looker Studio konektoru (<code>getSchema</code>, <code>getData</code>, <code>getAuthType</code>, <code>isAdminUser</code>)</li>
+        <li><code>main.js</code> – vstupní body Google Data Studio konektoru (<code>getSchema</code>, <code>getData</code>, <code>getAuthType</code>, <code>isAdminUser</code>)</li>
         <li><code>config.js</code> – <code>getConfig</code>, definice konfiguračních polí</li>
         <li><code>schema.js</code> – schéma sloupců (dimenze, metriky, granularita)</li>
         <li><code>root.js</code> – orchestrace: parsování requestu, výběr reportu, volání API, retry logika</li>
@@ -242,7 +242,7 @@
         <li><code>datacore.js</code> – sdílená logika pro zpracování dat z API</li>
         <li><code>logger.js</code> – logování do Cloud Logging</li>
         <li><code>tests.js</code> – testy</li>
-        <li><code>appsscript.json</code> – manifest (oauth scopes, Looker Studio metadata, URL whitelist)</li>
+        <li><code>appsscript.json</code> – manifest (oauth scopes, Google Data Studio metadata, URL whitelist)</li>
       </ul>
     </section>
 

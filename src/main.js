@@ -60,7 +60,7 @@ function getData(request) {
       Ro.Log.addValue(exp, true);
     }
     // Re-throw to preserve specific UserErrors from throwException() in root.js
-    // (login failure, API retry exhaustion). Looker Studio handles these directly.
+    // (login failure, API retry exhaustion). Google Data Studio handles these directly.
     throw exp;
   }
   // load() returned falsy without throwing — something failed silently
