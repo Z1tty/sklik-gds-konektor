@@ -150,7 +150,7 @@
   <main>
 
     <h1><i class="bi bi-patch-check me-2 text-primary"></i>Google Verifikace</h1>
-    <p class="lead-sub">Prokázání vlastnictví domény <code>sklik.cz</code> u Googlu a demo video — nezbytné kroky pro publikaci komunitního konektoru v Looker Studiu.</p>
+    <p class="lead-sub">Prokázání vlastnictví domény <code>sklik.cz</code> u Googlu a demo video — nezbytné kroky pro publikaci komunitního konektoru v Google Data Studiu.</p>
 
     <div class="meta-row">
       <span class="meta-chip">
@@ -164,7 +164,7 @@
       </span>
       <span class="meta-chip">
         <i class="bi bi-tag"></i>
-        Verze konektoru: <code>LS 6.0.0</code>
+        Verze konektoru: <code>GDS 6.0.0</code>
       </span>
     </div>
 
@@ -180,10 +180,10 @@
 
       <h3>Proč ověření potřebujeme</h3>
       <p>
-        Aby bylo možné publikovat komunitní konektor pro Looker Studio pod oficiální značkou Sklik, musí Google ověřit, že vlastníme doménu <code>sklik.cz</code>. Bez ověření Google zobrazuje u konektoru varování „neověřený vývojář" a omezuje jeho dostupnost.
+        Aby bylo možné publikovat komunitní konektor pro Google Data Studio pod oficiální značkou Sklik, musí Google ověřit, že vlastníme doménu <code>sklik.cz</code>. Bez ověření Google zobrazuje u konektoru varování „neověřený vývojář" a omezuje jeho dostupnost.
       </p>
 
-      <h3>Verifikační soubor pro LS 6.0.0</h3>
+      <h3>Verifikační soubor pro GDS 6.0.0</h3>
       <p>Google vyžaduje, aby na rootu domény <code>sklik.cz</code> byl dostupný verifikační soubor s následujícím názvem:</p>
 
       <div class="token-box mb-3">
@@ -200,13 +200,13 @@
       <ol>
         <li>Verifikační soubor s výše uvedeným názvem umístit do rootu webu <code>sklik.cz</code> tak, aby byl veřejně dostupný přes HTTPS.</li>
         <li>Ověřit, že soubor vrací HTTP 200 a není přesměrován (<code>curl -I https://sklik.cz/google-site-verification=4kRvPMmSCJ6fYEYQIqAcYrtV6oVU_SRLE-_WJ0-lVd4.txt</code>).</li>
-        <li>V Google Search Console / Looker Studio spustit verifikaci domény.</li>
+        <li>V Google Search Console / Google Data Studio spustit verifikaci domény.</li>
         <li>Po úspěšném ověření soubor <strong>neodstraňovat</strong> — Google ověření periodicky obnovuje.</li>
       </ol>
 
       <h3>Změna při vydání nové verze konektoru</h3>
       <p>
-        Verifikační token je vázaný na konkrétní verzi konektoru. Při vydání nové verze (např. <code>LS 6.1.0</code>) Google vygeneruje nový soubor a starý je nutné nahradit. Aktuální token pro nasazenou verzi je vždy uveden výše.
+        Verifikační token je vázaný na konkrétní verzi konektoru. Při vydání nové verze (např. <code>GDS 6.1.0</code>) Google vygeneruje nový soubor a starý je nutné nahradit. Aktuální token pro nasazenou verzi je vždy uveden výše.
       </p>
     </section>
 
@@ -221,7 +221,7 @@
       </div>
 
       <p>
-        Pro dokončení verifikace Google vyžaduje doložit funkčnost konektoru demo videem (ukázka přihlášení, použití scopes a fungování v Looker Studiu). Aktuální video, které bylo přiloženo k žádosti o verifikaci:
+        Pro dokončení verifikace Google vyžaduje doložit funkčnost konektoru demo videem (ukázka přihlášení, použití scopes a fungování v Google Data Studiu). Aktuální video, které bylo přiloženo k žádosti o verifikaci:
       </p>
 
       <div class="video-wrap mb-3">
