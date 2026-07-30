@@ -1,0 +1,26 @@
+{
+  "timeZone": "Europe/Paris",
+  "webapp": {
+    "access": "ANYONE",
+    "executeAs": "USER_ACCESSING"
+  },
+  "exceptionLogging": "STACKDRIVER",
+  "oauthScopes": ["https://www.googleapis.com/auth/script.external_request"],
+  "urlFetchWhitelist": ["https://api.sklik.cz/v1/"],
+  "runtimeVersion": "V8",
+  "dataStudio": {
+    "name": "Sklik GDS connector v7.0.2 Fenix",
+    "logoUrl": "https://napoveda.sklik.cz/wp-content/uploads/2024/05/sklik.jpg",
+    "company": "Seznam a.s.",
+    "companyUrl": "https://sklik.cz",
+    "addonUrl": "https://napoveda.sklik.cz/pokrocila-prace-s-daty/google-data-studio/",
+    "supportUrl": "https://napoveda.sklik.cz/casto-kladene-dotazy/kontaktni-formular/",
+    "description": "Konektor pro Google Looker Studio postavený na Fenix API. Podporuje rozpady konverzí dle SEM události. Copyright (C) 2026 Seznam.cz, a.s.",
+    "sources": ["SKLIK"],
+    "shortDescription": "Load data from Sklik Fenix API and show in GDS",
+    "authType": ["NONE"],
+    "feeType": ["FREE"],
+    "privacyPolicyUrl": "https://napoveda.sklik.cz/pokrocila-prace-s-daty/google-data-studio/",
+    "termsOfServiceUrl": "https://napoveda.sklik.cz/pokrocila-prace-s-daty/google-data-studio/"
+  }
+}
