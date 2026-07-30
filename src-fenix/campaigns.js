@@ -8,12 +8,13 @@ Author: Josef Matoušek
 var CAMPAIGN_ATTRS = [
   'id', 'name', 'status', 'isDeleted', 'type',
   'impressions', 'clicks', 'totalMoney', 'avgCpc', 'ctr', 'avgPosition',
+  'impressionMoney', 'avgCpt',
   'networks.fulltext.impressions', 'networks.fulltext.clicks', 'networks.fulltext.totalMoney', 'networks.fulltext.avgPosition',
   'networks.context.impressions',  'networks.context.clicks',  'networks.context.totalMoney',  'networks.context.avgPosition',
   'networks.video.impressions',    'networks.video.clicks',    'networks.video.totalMoney',    'networks.video.avgPosition',
-  'conversionIds.conversions', 'conversionIds.totalMoney', 'conversionIds.conversionValue',
-  'conversionIds.conversionPrice', 'conversionIds.conversionRatio', 'conversionIds.clickMoney',
-  'conversionIds.pno', 'conversionIds.conversionId', 'conversionIds.name', 'conversionIds.semEventName'
+  'conversionIds.conversions', 'conversionIds.conversionValue',
+  'conversionIds.conversionPrice', 'conversionIds.conversionRatio',
+  'conversionIds.name', 'conversionIds.semEventName'
 ];
 
 /**
@@ -79,13 +80,12 @@ function expandCampaignConversions(campaign) {
     cgf_totalMoney_kc:       (campaign.totalMoney  || 0) * 0.01,
     cgf_avgCpc_kc:           (campaign.avgCpc      || 0) * 0.01,
     cgf_avgPosition:         campaign.avgPosition || 0,
-    cgf_convId:              0,
+    cgf_impressionMoney_kc:  (campaign.impressionMoney || 0) * 0.01,
+    cgf_avgCpt_kc:           (campaign.avgCpt          || 0) * 0.01,
     cgf_convName:            '',
     cgf_semEventName:        '',
     cgf_conversions:         0,
     cgf_conversionValue_kc:  0,
-    cgf_clickMoney_kc:       0,
-    cgf_convTotalMoney_kc:   0,
     cgf_conversionPrice_kc:  totalConversions > 0 ? (campaign.totalMoney || 0) * 0.01 / totalConversions : 0,
     cgf_conversionRatio:     campaign.clicks > 0 ? totalConversions / campaign.clicks : 0,
     cgf_pno:                 totalConversionValue > 0 ? (campaign.totalMoney || 0) / totalConversionValue * 100 : 0
@@ -111,14 +111,13 @@ function expandCampaignConversions(campaign) {
       cgf_totalMoney_kc:       0,
       cgf_avgCpc_kc:           0,
       cgf_avgPosition:         0,
-      cgf_convId:              conv.conversionId    || 0,
+      cgf_impressionMoney_kc:  0,
+      cgf_avgCpt_kc:           0,
       cgf_convName:            conv.name            || '',
       cgf_semEventName:        conv.semEventName    || '',
-      cgf_conversions:        conv.conversions     || 0,
-      cgf_conversionValue_kc: (conv.conversionValue || 0) * 0.01,
-      cgf_clickMoney_kc:      (conv.clickMoney      || 0) * 0.01,
-      cgf_convTotalMoney_kc:  (conv.totalMoney      || 0) * 0.01,
-      cgf_conversionPrice_kc: 0,
+      cgf_conversions:         conv.conversions     || 0,
+      cgf_conversionValue_kc:  (conv.conversionValue || 0) * 0.01,
+      cgf_conversionPrice_kc:  0,
       cgf_conversionRatio:    0,
       cgf_pno:                0
     };

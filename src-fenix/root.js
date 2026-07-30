@@ -39,9 +39,11 @@ var Root = function (rConfigParams, sklikDataSchema, rFields, rDateRange) {
 
   this.displayColumns = {
     'campaigns': [],
-    'groups': []
+    'groups': [],
+    'conversions': [],
+    'ads': []
   };
-  this.types = { 'cgf': 'campaigns', 'gof': 'groups' };
+  this.types = { 'cgf': 'campaigns', 'gof': 'groups', /* 'cvf': 'conversions', */ 'adf': 'ads' };
 
   this.periods = ['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Yearly'];
 
@@ -179,6 +181,11 @@ var Root = function (rConfigParams, sklikDataSchema, rFields, rDateRange) {
       selectedEntity = 'campaigns';
     } else if (this.displayColumns['groups'].length > 0) {
       selectedEntity = 'groups';
+    // cvf (conversions) entity hidden — uncomment to re-enable
+    // } else if (this.displayColumns['conversions'].length > 0) {
+    //   selectedEntity = 'conversions';
+    } else if (this.displayColumns['ads'].length > 0) {
+      selectedEntity = 'ads';
     } else {
       this.Log.addHeader('Žádná Fenix pole nebyla vybrána', 2, 'negative');
       return false;
@@ -189,21 +196,26 @@ var Root = function (rConfigParams, sklikDataSchema, rFields, rDateRange) {
     var instance;
     if (selectedEntity === 'campaigns') {
       instance = new CampaignsFenixClass(this);
-    } else {
+    } else if (selectedEntity === 'groups') {
       instance = new GroupsFenixClass(this);
+    // } else if (selectedEntity === 'conversions') {
+    //   instance = new ConversionsFenixClass(this);
+    } else {
+      instance = new AdsFenixClass(this);
     }
 
-    if (this.granularity == 'total') {
-      var response = instance.getDataFromApi(this.granularity, { 'limit': 5000 });
-      if (response) {
-        instance.convertDataToGDS(response);
-      }
-    } else {
-      var days = this.setupDaysCycle(this.granularity);
-      var response = instance.getDataFromApi(this.granularity, { 'limit': Math.floor(5000 / days) });
-      if (response) {
-        instance.convertDataToGDSInGranularity(response);
-      }
+    if (this.granularity !== 'total') {
+      DataStudioApp.createCommunityConnector()
+        .newUserError()
+        .setText('Časová granularita (Po dnech / Po týdnech / …) není Fenix API podporována. Odeberte dimenzi granularity z reportu a použijte pouze agregovaná data.')
+        .setDebugText('granularity field selected: ' + this.granularity + ' — Fenix API does not support statisticsGranularity on /sklik/* endpoints')
+        .throwException();
+      return false;
+    }
+
+    var response = instance.getDataFromApi();
+    if (response) {
+      instance.convertDataToGDS(response);
     }
     return true;
   }

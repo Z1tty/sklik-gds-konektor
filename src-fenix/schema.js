@@ -17,6 +17,7 @@ var Schema = function (config) {
     {
       name: 'daily',
       label: 'Po dnech',
+      description: 'Časová granularita: denní rozpad dat (YYYYMMDD).',
       dataType: 'STRING',
       group: 'granularity',
       semantics: {
@@ -28,6 +29,7 @@ var Schema = function (config) {
     {
       name: 'weekly',
       label: 'Po týdnech',
+      description: 'Časová granularita: týdenní rozpad dat (YYYYWW).',
       dataType: 'STRING',
       group: 'granularity',
       semantics: {
@@ -39,6 +41,7 @@ var Schema = function (config) {
     {
       name: 'monthly',
       label: 'Po měsících',
+      description: 'Časová granularita: měsíční rozpad dat (YYYYMM).',
       dataType: 'STRING',
       group: 'granularity',
       semantics: {
@@ -50,6 +53,7 @@ var Schema = function (config) {
     {
       name: 'quarterly',
       label: 'Po čtvrtletích',
+      description: 'Časová granularita: čtvrtletní rozpad dat (YYYYQ).',
       dataType: 'STRING',
       group: 'granularity',
       semantics: {
@@ -61,6 +65,7 @@ var Schema = function (config) {
     {
       name: 'yearly',
       label: 'Po rocích',
+      description: 'Časová granularita: roční rozpad dat (YYYY).',
       dataType: 'STRING',
       group: 'granularity',
       semantics: {
@@ -73,11 +78,15 @@ var Schema = function (config) {
     /*
     * ######################################################
     * ########## SCHEMA PRO FENIX — KAMPANĚ (cgf) ##########
+    * Hybridní model: každá kampaň generuje N+1 řádků.
+    * Řádek 1 (convName=''): provozní metriky + per-event součty.
+    * Řádky 2–N: jeden řádek na konverzní definici s detailem konverzí.
     * ######################################################
     */
     {
       name: 'cgf_campaignId',
       label: 'Kampaň: ID',
+      description: 'Unikátní ID kampaně ve Skliku.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'DIMENSION' }
@@ -85,6 +94,7 @@ var Schema = function (config) {
     {
       name: 'cgf_campaignName',
       label: 'Kampaň: Název',
+      description: 'Název kampaně ve Skliku.',
       dataType: 'STRING',
       group: 'campaigns',
       semantics: { conceptType: 'DIMENSION' }
@@ -92,6 +102,7 @@ var Schema = function (config) {
     {
       name: 'cgf_campaignStatus',
       label: 'Kampaň: Stav',
+      description: 'Stav kampaně: active = aktivní, suspend = pozastavena.',
       dataType: 'STRING',
       group: 'campaigns',
       semantics: { conceptType: 'DIMENSION' }
@@ -99,6 +110,7 @@ var Schema = function (config) {
     {
       name: 'cgf_campaignIsDeleted',
       label: 'Kampaň: Smazána',
+      description: 'Zda je kampaň smazána: true = smazána, false = aktivní záznam.',
       dataType: 'STRING',
       group: 'campaigns',
       semantics: { conceptType: 'DIMENSION' }
@@ -106,27 +118,23 @@ var Schema = function (config) {
     {
       name: 'cgf_campaignType',
       label: 'Kampaň: Typ',
+      description: 'Typ kampaně: combined, video, context, fulltext, product, zbozi, social, simple, audio, smart.',
       dataType: 'STRING',
       group: 'campaigns',
       semantics: { conceptType: 'DIMENSION' }
     },
     {
       name: 'cgf_semEventName',
-      label: 'Kampaň: Typ konverze (SEM)',
+      label: 'Kampaň: Konverze typ',
+      description: 'Typ SEM eventu konverzní definice (např. Purchase, Lead, AddToCart). Prázdné na souhrnném řádku.',
       dataType: 'STRING',
       group: 'campaigns',
       semantics: { conceptType: 'DIMENSION' }
     },
     {
-      name: 'cgf_convId',
-      label: 'Kampaň: ID konverzní definice',
-      dataType: 'NUMBER',
-      group: 'campaigns',
-      semantics: { conceptType: 'DIMENSION' }
-    },
-    {
       name: 'cgf_convName',
-      label: 'Kampaň: Název konverzní definice',
+      label: 'Kampaň: Konverze název',
+      description: 'Název konverzní definice. Prázdné na souhrnném řádku — filtrujte na neprázdné pro detail konverzí.',
       dataType: 'STRING',
       group: 'campaigns',
       semantics: { conceptType: 'DIMENSION' }
@@ -134,160 +142,183 @@ var Schema = function (config) {
     {
       name: 'cgf_conversions',
       label: 'Kampaň: Konverze',
+      description: 'Počet konverzí dané definice. Vyplněno pouze na řádcích s konkrétní konverzní definicí (convName ≠ prázdné). Na souhrnném řádku je 0 — pro celkový počet použijte součet event polí.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC' }
     },
     {
       name: 'cgf_conv_purchase',
-      label: 'Kampaň: Konverze — Purchase',
+      label: 'Kampaň: Event — Purchase',
+      description: 'Celkový počet eventů Purchase za kampaň. Vyplněno pouze na souhrnném řádku (convName = prázdné).',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC' }
     },
     {
       name: 'cgf_conv_lead',
-      label: 'Kampaň: Konverze — Lead',
+      label: 'Kampaň: Event — Lead',
+      description: 'Celkový počet eventů Lead za kampaň. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC' }
     },
     {
       name: 'cgf_conv_addtocart',
-      label: 'Kampaň: Konverze — AddToCart',
+      label: 'Kampaň: Event — AddToCart',
+      description: 'Celkový počet eventů AddToCart za kampaň. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC' }
     },
     {
       name: 'cgf_conv_addtowishlist',
-      label: 'Kampaň: Konverze — AddToWishlist',
+      label: 'Kampaň: Event — AddToWishlist',
+      description: 'Celkový počet eventů AddToWishlist za kampaň. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC' }
     },
     {
       name: 'cgf_conv_viewcontent',
-      label: 'Kampaň: Konverze — ViewContent',
+      label: 'Kampaň: Event — ViewContent',
+      description: 'Celkový počet eventů ViewContent za kampaň. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC' }
     },
     {
       name: 'cgf_conv_initiatecheckout',
-      label: 'Kampaň: Konverze — InitiateCheckout',
+      label: 'Kampaň: Event — InitiateCheckout',
+      description: 'Celkový počet eventů InitiateCheckout za kampaň. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC' }
     },
     {
       name: 'cgf_conv_addpaymentinfo',
-      label: 'Kampaň: Konverze — AddPaymentInfo',
+      label: 'Kampaň: Event — AddPaymentInfo',
+      description: 'Celkový počet eventů AddPaymentInfo za kampaň. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC' }
     },
     {
       name: 'cgf_conv_completeregistration',
-      label: 'Kampaň: Konverze — CompleteRegistration',
+      label: 'Kampaň: Event — CompleteRegistration',
+      description: 'Celkový počet eventů CompleteRegistration za kampaň. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC' }
     },
     {
       name: 'cgf_conv_subscribe',
-      label: 'Kampaň: Konverze — Subscribe',
+      label: 'Kampaň: Event — Subscribe',
+      description: 'Celkový počet eventů Subscribe za kampaň. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC' }
     },
     {
       name: 'cgf_conv_search',
-      label: 'Kampaň: Konverze — Search',
+      label: 'Kampaň: Event — Search',
+      description: 'Celkový počet eventů Search za kampaň. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC' }
     },
     {
       name: 'cgf_conv_contact',
-      label: 'Kampaň: Konverze — Contact',
+      label: 'Kampaň: Event — Contact',
+      description: 'Celkový počet eventů Contact za kampaň. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC' }
     },
     {
       name: 'cgf_convval_purchase_kc',
-      label: 'Kampaň: Hodnota — Purchase (Kč)',
+      label: 'Kampaň: Event hodnota (Kč) — Purchase',
+      description: 'Celková hodnota eventů Purchase v Kč. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
     },
     {
       name: 'cgf_convval_lead_kc',
-      label: 'Kampaň: Hodnota — Lead (Kč)',
+      label: 'Kampaň: Event hodnota (Kč) — Lead',
+      description: 'Celková hodnota eventů Lead v Kč. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
     },
     {
       name: 'cgf_convval_addtocart_kc',
-      label: 'Kampaň: Hodnota — AddToCart (Kč)',
+      label: 'Kampaň: Event hodnota (Kč) — AddToCart',
+      description: 'Celková hodnota eventů AddToCart v Kč. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
     },
     {
       name: 'cgf_convval_addtowishlist_kc',
-      label: 'Kampaň: Hodnota — AddToWishlist (Kč)',
+      label: 'Kampaň: Event hodnota (Kč) — AddToWishlist',
+      description: 'Celková hodnota eventů AddToWishlist v Kč. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
     },
     {
       name: 'cgf_convval_viewcontent_kc',
-      label: 'Kampaň: Hodnota — ViewContent (Kč)',
+      label: 'Kampaň: Event hodnota (Kč) — ViewContent',
+      description: 'Celková hodnota eventů ViewContent v Kč. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
     },
     {
       name: 'cgf_convval_initiatecheckout_kc',
-      label: 'Kampaň: Hodnota — InitiateCheckout (Kč)',
+      label: 'Kampaň: Event hodnota (Kč) — InitiateCheckout',
+      description: 'Celková hodnota eventů InitiateCheckout v Kč. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
     },
     {
       name: 'cgf_convval_addpaymentinfo_kc',
-      label: 'Kampaň: Hodnota — AddPaymentInfo (Kč)',
+      label: 'Kampaň: Event hodnota (Kč) — AddPaymentInfo',
+      description: 'Celková hodnota eventů AddPaymentInfo v Kč. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
     },
     {
       name: 'cgf_convval_completeregistration_kc',
-      label: 'Kampaň: Hodnota — CompleteRegistration (Kč)',
+      label: 'Kampaň: Event hodnota (Kč) — CompleteRegistration',
+      description: 'Celková hodnota eventů CompleteRegistration v Kč. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
     },
     {
       name: 'cgf_convval_subscribe_kc',
-      label: 'Kampaň: Hodnota — Subscribe (Kč)',
+      label: 'Kampaň: Event hodnota (Kč) — Subscribe',
+      description: 'Celková hodnota eventů Subscribe v Kč. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
     },
     {
       name: 'cgf_convval_search_kc',
-      label: 'Kampaň: Hodnota — Search (Kč)',
+      label: 'Kampaň: Event hodnota (Kč) — Search',
+      description: 'Celková hodnota eventů Search v Kč. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
     },
     {
       name: 'cgf_convval_contact_kc',
-      label: 'Kampaň: Hodnota — Contact (Kč)',
+      label: 'Kampaň: Event hodnota (Kč) — Contact',
+      description: 'Celková hodnota eventů Contact v Kč. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
@@ -295,20 +326,7 @@ var Schema = function (config) {
     {
       name: 'cgf_conversionValue_kc',
       label: 'Kampaň: Hodnota konverzí (Kč)',
-      dataType: 'NUMBER',
-      group: 'campaigns',
-      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
-    },
-    {
-      name: 'cgf_clickMoney_kc',
-      label: 'Kampaň: Cena za prokliky (Kč)',
-      dataType: 'NUMBER',
-      group: 'campaigns',
-      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
-    },
-    {
-      name: 'cgf_convTotalMoney_kc',
-      label: 'Kampaň: Přiřazené náklady konverze (Kč)',
+      description: 'Hodnota konverzí konkrétní definice v Kč. Vyplněno pouze na řádcích s konverzní definicí (convName ≠ prázdné).',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
@@ -316,27 +334,31 @@ var Schema = function (config) {
     {
       name: 'cgf_conversionPrice_kc',
       label: 'Kampaň: Cena konverze (Kč)',
+      description: 'Průměrná cena za jednu konverzi = celková cena / počet konverzí (Kč). Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
-      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY', defaultAggregationType: 'SUM' }
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY', defaultAggregationType: 'NO_AGGREGATION' }
     },
     {
       name: 'cgf_conversionRatio',
       label: 'Kampaň: Konverzní poměr',
+      description: 'Podíl konverzí na proklikech = konverze / prokliky. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
-      semantics: { conceptType: 'METRIC', defaultAggregationType: 'SUM' }
+      semantics: { conceptType: 'METRIC', defaultAggregationType: 'NO_AGGREGATION' }
     },
     {
       name: 'cgf_pno',
       label: 'Kampaň: PNO (náklady/hodnota)',
+      description: 'Podíl nákladů na obratu = celková cena / hodnota konverzí × 100. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
-      semantics: { conceptType: 'METRIC', defaultAggregationType: 'SUM' }
+      semantics: { conceptType: 'METRIC', defaultAggregationType: 'NO_AGGREGATION' }
     },
     {
       name: 'cgf_impressions',
       label: 'Kampaň: Zobrazení',
+      description: 'Počet zobrazení reklam kampaně za zvolené období. Vyplněno pouze na souhrnném řádku (cgf_convName = prázdné).',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC' }
@@ -344,6 +366,7 @@ var Schema = function (config) {
     {
       name: 'cgf_clicks',
       label: 'Kampaň: Prokliky',
+      description: 'Počet prokliků reklam kampaně za zvolené období. Vyplněno pouze na souhrnném řádku (cgf_convName = prázdné).',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC' }
@@ -351,6 +374,7 @@ var Schema = function (config) {
     {
       name: 'cgf_ctr',
       label: 'Kampaň: CTR',
+      description: 'Míra prokliku = prokliky / zobrazení (%). Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
@@ -358,6 +382,7 @@ var Schema = function (config) {
     {
       name: 'cgf_totalMoney_kc',
       label: 'Kampaň: Celková cena (Kč)',
+      description: 'Celkové náklady kampaně za zvolené období v Kč. Vyplněno pouze na souhrnném řádku (cgf_convName = prázdné).',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
@@ -365,6 +390,7 @@ var Schema = function (config) {
     {
       name: 'cgf_avgCpc_kc',
       label: 'Kampaň: Průměrná CPC (Kč)',
+      description: 'Průměrná cena za proklik v Kč. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY', defaultAggregationType: 'AVG' }
@@ -372,19 +398,38 @@ var Schema = function (config) {
     {
       name: 'cgf_avgPosition',
       label: 'Kampaň: Průměrná pozice',
+      description: 'Průměrná pozice reklamy ve výsledcích vyhledávání. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
       semantics: { conceptType: 'METRIC', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'cgf_impressionMoney_kc',
+      label: 'Kampaň: Náklady za zobrazení (Kč)',
+      description: 'Celkové náklady za zobrazení (CPT/CPM model) v Kč. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
+    },
+    {
+      name: 'cgf_avgCpt_kc',
+      label: 'Kampaň: Průměrná CPT (Kč)',
+      description: 'Průměrná cena za tisíc zobrazení (CPT) v Kč. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY', defaultAggregationType: 'AVG' }
     },
 
     /*
     * ######################################################
     * ########## SCHEMA PRO FENIX — SESTAVY (gof) ##########
+    * Stejný hybridní model jako kampaně.
     * ######################################################
     */
     {
       name: 'gof_campaignId',
       label: 'Sestava: ID kampaně',
+      description: 'ID nadřazené kampaně sestavy ve Skliku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'DIMENSION' }
@@ -392,6 +437,7 @@ var Schema = function (config) {
     {
       name: 'gof_groupId',
       label: 'Sestava: ID sestavy',
+      description: 'Unikátní ID sestavy ve Skliku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'DIMENSION' }
@@ -399,6 +445,7 @@ var Schema = function (config) {
     {
       name: 'gof_groupName',
       label: 'Sestava: Název',
+      description: 'Název sestavy ve Skliku.',
       dataType: 'STRING',
       group: 'groups',
       semantics: { conceptType: 'DIMENSION' }
@@ -406,6 +453,7 @@ var Schema = function (config) {
     {
       name: 'gof_groupStatus',
       label: 'Sestava: Stav',
+      description: 'Stav sestavy: active = aktivní, suspend = pozastavena.',
       dataType: 'STRING',
       group: 'groups',
       semantics: { conceptType: 'DIMENSION' }
@@ -413,27 +461,95 @@ var Schema = function (config) {
     {
       name: 'gof_groupIsDeleted',
       label: 'Sestava: Smazána',
+      description: 'Zda je sestava smazána: true = smazána, false = aktivní záznam.',
       dataType: 'STRING',
       group: 'groups',
       semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'gof_impressionShare',
+      label: 'Sestava: Podíl zobrazení (IS)',
+      description: 'Podíl získaných zobrazení z celkového počtu způsobilých zobrazení (impression share). 0–1.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'gof_winRate',
+      label: 'Sestava: Win rate',
+      description: 'Podíl aukcí vyhraných sestavou z celkového počtu aukcí, ve kterých se zúčastnila. 0–1.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'gof_missedPrice',
+      label: 'Sestava: Promarněné náklady (Kč)',
+      description: 'Odhadované náklady, které by sestava utratila, kdyby neztrácela zobrazení kvůli nízkým nabídkám.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
+    },
+    {
+      name: 'gof_exhaustedBudgetCount',
+      label: 'Sestava: Počet vyčerpání rozpočtu',
+      description: 'Počet dní/period, kdy byl rozpočet sestavy vyčerpán.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'gof_exhaustedBudgetShare',
+      label: 'Sestava: Podíl vyčerpání rozpočtu',
+      description: 'Podíl dní/period, kdy byl rozpočet sestavy vyčerpán. 0–1.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'gof_stoppedByScheduleCount',
+      label: 'Sestava: Počet zastavení harmonogramem',
+      description: 'Počet dní/period, kdy byla sestava zastavena časovým harmonogramem.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'gof_stoppedByScheduleShare',
+      label: 'Sestava: Podíl zastavení harmonogramem',
+      description: 'Podíl dní/period, kdy byla sestava zastavena časovým harmonogramem. 0–1.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'gof_underForestThresholdCount',
+      label: 'Sestava: Počet pod prahem aukce',
+      description: 'Počet dní/period, kdy sestava nedosáhla minimální nabídky pro vstup do aukce.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'gof_underForestThresholdShare',
+      label: 'Sestava: Podíl pod prahem aukce',
+      description: 'Podíl dní/period, kdy sestava nedosáhla minimální nabídky pro vstup do aukce. 0–1.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
     },
     {
       name: 'gof_semEventName',
-      label: 'Sestava: Typ konverze (SEM)',
+      label: 'Sestava: Konverze typ',
+      description: 'Typ SEM eventu konverzní definice (např. Purchase, Lead, AddToCart). Prázdné na souhrnném řádku.',
       dataType: 'STRING',
-      group: 'groups',
-      semantics: { conceptType: 'DIMENSION' }
-    },
-    {
-      name: 'gof_convId',
-      label: 'Sestava: ID konverzní definice',
-      dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'DIMENSION' }
     },
     {
       name: 'gof_convName',
-      label: 'Sestava: Název konverzní definice',
+      label: 'Sestava: Konverze název',
+      description: 'Název konverzní definice. Prázdné na souhrnném řádku — filtrujte na neprázdné pro detail konverzí.',
       dataType: 'STRING',
       group: 'groups',
       semantics: { conceptType: 'DIMENSION' }
@@ -441,160 +557,183 @@ var Schema = function (config) {
     {
       name: 'gof_conversions',
       label: 'Sestava: Konverze',
+      description: 'Počet konverzí dané definice. Vyplněno pouze na řádcích s konverzní definicí (convName ≠ prázdné).',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC' }
     },
     {
       name: 'gof_conv_purchase',
-      label: 'Sestava: Konverze — Purchase',
+      label: 'Sestava: Event — Purchase',
+      description: 'Celkový počet eventů Purchase za sestavu. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC' }
     },
     {
       name: 'gof_conv_lead',
-      label: 'Sestava: Konverze — Lead',
+      label: 'Sestava: Event — Lead',
+      description: 'Celkový počet eventů Lead za sestavu. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC' }
     },
     {
       name: 'gof_conv_addtocart',
-      label: 'Sestava: Konverze — AddToCart',
+      label: 'Sestava: Event — AddToCart',
+      description: 'Celkový počet eventů AddToCart za sestavu. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC' }
     },
     {
       name: 'gof_conv_addtowishlist',
-      label: 'Sestava: Konverze — AddToWishlist',
+      label: 'Sestava: Event — AddToWishlist',
+      description: 'Celkový počet eventů AddToWishlist za sestavu. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC' }
     },
     {
       name: 'gof_conv_viewcontent',
-      label: 'Sestava: Konverze — ViewContent',
+      label: 'Sestava: Event — ViewContent',
+      description: 'Celkový počet eventů ViewContent za sestavu. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC' }
     },
     {
       name: 'gof_conv_initiatecheckout',
-      label: 'Sestava: Konverze — InitiateCheckout',
+      label: 'Sestava: Event — InitiateCheckout',
+      description: 'Celkový počet eventů InitiateCheckout za sestavu. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC' }
     },
     {
       name: 'gof_conv_addpaymentinfo',
-      label: 'Sestava: Konverze — AddPaymentInfo',
+      label: 'Sestava: Event — AddPaymentInfo',
+      description: 'Celkový počet eventů AddPaymentInfo za sestavu. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC' }
     },
     {
       name: 'gof_conv_completeregistration',
-      label: 'Sestava: Konverze — CompleteRegistration',
+      label: 'Sestava: Event — CompleteRegistration',
+      description: 'Celkový počet eventů CompleteRegistration za sestavu. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC' }
     },
     {
       name: 'gof_conv_subscribe',
-      label: 'Sestava: Konverze — Subscribe',
+      label: 'Sestava: Event — Subscribe',
+      description: 'Celkový počet eventů Subscribe za sestavu. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC' }
     },
     {
       name: 'gof_conv_search',
-      label: 'Sestava: Konverze — Search',
+      label: 'Sestava: Event — Search',
+      description: 'Celkový počet eventů Search za sestavu. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC' }
     },
     {
       name: 'gof_conv_contact',
-      label: 'Sestava: Konverze — Contact',
+      label: 'Sestava: Event — Contact',
+      description: 'Celkový počet eventů Contact za sestavu. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC' }
     },
     {
       name: 'gof_convval_purchase_kc',
-      label: 'Sestava: Hodnota — Purchase (Kč)',
+      label: 'Sestava: Event hodnota (Kč) — Purchase',
+      description: 'Celková hodnota eventů Purchase v Kč. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
     },
     {
       name: 'gof_convval_lead_kc',
-      label: 'Sestava: Hodnota — Lead (Kč)',
+      label: 'Sestava: Event hodnota (Kč) — Lead',
+      description: 'Celková hodnota eventů Lead v Kč. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
     },
     {
       name: 'gof_convval_addtocart_kc',
-      label: 'Sestava: Hodnota — AddToCart (Kč)',
+      label: 'Sestava: Event hodnota (Kč) — AddToCart',
+      description: 'Celková hodnota eventů AddToCart v Kč. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
     },
     {
       name: 'gof_convval_addtowishlist_kc',
-      label: 'Sestava: Hodnota — AddToWishlist (Kč)',
+      label: 'Sestava: Event hodnota (Kč) — AddToWishlist',
+      description: 'Celková hodnota eventů AddToWishlist v Kč. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
     },
     {
       name: 'gof_convval_viewcontent_kc',
-      label: 'Sestava: Hodnota — ViewContent (Kč)',
+      label: 'Sestava: Event hodnota (Kč) — ViewContent',
+      description: 'Celková hodnota eventů ViewContent v Kč. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
     },
     {
       name: 'gof_convval_initiatecheckout_kc',
-      label: 'Sestava: Hodnota — InitiateCheckout (Kč)',
+      label: 'Sestava: Event hodnota (Kč) — InitiateCheckout',
+      description: 'Celková hodnota eventů InitiateCheckout v Kč. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
     },
     {
       name: 'gof_convval_addpaymentinfo_kc',
-      label: 'Sestava: Hodnota — AddPaymentInfo (Kč)',
+      label: 'Sestava: Event hodnota (Kč) — AddPaymentInfo',
+      description: 'Celková hodnota eventů AddPaymentInfo v Kč. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
     },
     {
       name: 'gof_convval_completeregistration_kc',
-      label: 'Sestava: Hodnota — CompleteRegistration (Kč)',
+      label: 'Sestava: Event hodnota (Kč) — CompleteRegistration',
+      description: 'Celková hodnota eventů CompleteRegistration v Kč. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
     },
     {
       name: 'gof_convval_subscribe_kc',
-      label: 'Sestava: Hodnota — Subscribe (Kč)',
+      label: 'Sestava: Event hodnota (Kč) — Subscribe',
+      description: 'Celková hodnota eventů Subscribe v Kč. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
     },
     {
       name: 'gof_convval_search_kc',
-      label: 'Sestava: Hodnota — Search (Kč)',
+      label: 'Sestava: Event hodnota (Kč) — Search',
+      description: 'Celková hodnota eventů Search v Kč. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
     },
     {
       name: 'gof_convval_contact_kc',
-      label: 'Sestava: Hodnota — Contact (Kč)',
+      label: 'Sestava: Event hodnota (Kč) — Contact',
+      description: 'Celková hodnota eventů Contact v Kč. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
@@ -602,20 +741,7 @@ var Schema = function (config) {
     {
       name: 'gof_conversionValue_kc',
       label: 'Sestava: Hodnota konverzí (Kč)',
-      dataType: 'NUMBER',
-      group: 'groups',
-      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
-    },
-    {
-      name: 'gof_clickMoney_kc',
-      label: 'Sestava: Cena za prokliky (Kč)',
-      dataType: 'NUMBER',
-      group: 'groups',
-      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
-    },
-    {
-      name: 'gof_convTotalMoney_kc',
-      label: 'Sestava: Přiřazené náklady konverze (Kč)',
+      description: 'Hodnota konverzí konkrétní definice v Kč. Vyplněno pouze na řádcích s konverzní definicí.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
@@ -623,27 +749,31 @@ var Schema = function (config) {
     {
       name: 'gof_conversionPrice_kc',
       label: 'Sestava: Cena konverze (Kč)',
+      description: 'Průměrná cena za jednu konverzi = celková cena / počet konverzí (Kč). Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
-      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY', defaultAggregationType: 'SUM' }
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY', defaultAggregationType: 'NO_AGGREGATION' }
     },
     {
       name: 'gof_conversionRatio',
       label: 'Sestava: Konverzní poměr',
+      description: 'Podíl konverzí na proklikech = konverze / prokliky. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
-      semantics: { conceptType: 'METRIC', defaultAggregationType: 'SUM' }
+      semantics: { conceptType: 'METRIC', defaultAggregationType: 'NO_AGGREGATION' }
     },
     {
       name: 'gof_pno',
       label: 'Sestava: PNO (náklady/hodnota)',
+      description: 'Podíl nákladů na obratu = celková cena / hodnota konverzí × 100. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
-      semantics: { conceptType: 'METRIC', defaultAggregationType: 'SUM' }
+      semantics: { conceptType: 'METRIC', defaultAggregationType: 'NO_AGGREGATION' }
     },
     {
       name: 'gof_impressions',
       label: 'Sestava: Zobrazení',
+      description: 'Počet zobrazení reklam sestavy za zvolené období. Vyplněno pouze na souhrnném řádku (gof_convName = prázdné).',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC' }
@@ -651,6 +781,7 @@ var Schema = function (config) {
     {
       name: 'gof_clicks',
       label: 'Sestava: Prokliky',
+      description: 'Počet prokliků reklam sestavy za zvolené období. Vyplněno pouze na souhrnném řádku (gof_convName = prázdné).',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC' }
@@ -658,6 +789,7 @@ var Schema = function (config) {
     {
       name: 'gof_ctr',
       label: 'Sestava: CTR',
+      description: 'Míra prokliku = prokliky / zobrazení (%). Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
@@ -665,6 +797,7 @@ var Schema = function (config) {
     {
       name: 'gof_totalMoney_kc',
       label: 'Sestava: Celková cena (Kč)',
+      description: 'Celkové náklady sestavy za zvolené období v Kč. Vyplněno pouze na souhrnném řádku (gof_convName = prázdné).',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
@@ -672,6 +805,7 @@ var Schema = function (config) {
     {
       name: 'gof_avgCpc_kc',
       label: 'Sestava: Průměrná CPC (Kč)',
+      description: 'Průměrná cena za proklik v Kč. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY', defaultAggregationType: 'AVG' }
@@ -679,9 +813,315 @@ var Schema = function (config) {
     {
       name: 'gof_avgPosition',
       label: 'Sestava: Průměrná pozice',
+      description: 'Průměrná pozice reklamy ve výsledcích vyhledávání. Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
       semantics: { conceptType: 'METRIC', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'gof_impressionMoney_kc',
+      label: 'Sestava: Náklady za zobrazení (Kč)',
+      description: 'Celkové náklady za zobrazení (CPT/CPM model) v Kč. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
+    },
+    {
+      name: 'gof_avgCpt_kc',
+      label: 'Sestava: Průměrná CPT (Kč)',
+      description: 'Průměrná cena za tisíc zobrazení (CPT) v Kč. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY', defaultAggregationType: 'AVG' }
+    },
+
+    /*
+    * ######################################################
+    * ######## SCHEMA PRO FENIX — KONVERZE (cvf) ###########
+    * Lookup tabulka konverzních definic — jeden řádek na definici.
+    * Schováno — cvf entita zatím nemá přidanou hodnotu nad rámec dat z cgf/gof.
+    * ######################################################
+    */
+    /* cvf_START
+    {
+      name: 'cvf_convId',
+      label: 'Konverze: ID',
+      description: 'Unikátní ID konverzní definice ve Skliku.',
+      dataType: 'NUMBER',
+      group: 'conversions',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'cvf_convName',
+      label: 'Konverze: Název',
+      description: 'Název konverzní definice.',
+      dataType: 'STRING',
+      group: 'conversions',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'cvf_convDescription',
+      label: 'Konverze: Popis',
+      description: 'Textový popis konverzní definice.',
+      dataType: 'STRING',
+      group: 'conversions',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'cvf_semEventName',
+      label: 'Konverze: SEM Event',
+      description: 'Typ SEM eventu: Purchase, Lead, AddToCart, AddToWishlist, ViewContent, InitiateCheckout, AddPaymentInfo, CompleteRegistration, Subscribe, Search, Contact.',
+      dataType: 'STRING',
+      group: 'conversions',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'cvf_isDeleted',
+      label: 'Konverze: Smazána',
+      description: 'Zda je konverzní definice smazána: true = smazána, false = aktivní.',
+      dataType: 'STRING',
+      group: 'conversions',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'cvf_convValue',
+      label: 'Konverze: Výchozí hodnota (Kč)',
+      description: 'Výchozí hodnota konverze v Kč nastavená v definici (statická hodnota, ne přenesená z webu).',
+      dataType: 'NUMBER',
+      group: 'conversions',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
+    },
+    cvf_END */
+
+    /*
+    * ######################################################
+    * ########### SCHEMA PRO FENIX — INZERÁTY (adf) ########
+    * Jeden řádek na inzerát — bez hybridního modelu.
+    * ######################################################
+    */
+    {
+      name: 'adf_campaignId',
+      label: 'Inzerát: ID kampaně',
+      description: 'ID nadřazené kampaně.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'adf_groupId',
+      label: 'Inzerát: ID sestavy',
+      description: 'ID nadřazené sestavy.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'adf_adId',
+      label: 'Inzerát: ID',
+      description: 'Unikátní ID inzerátu ve Skliku.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'adf_adType',
+      label: 'Inzerát: Typ',
+      description: 'Typ inzerátu: eta (rozšířený textový), smart (chytrý).',
+      dataType: 'STRING',
+      group: 'ads',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'adf_status',
+      label: 'Inzerát: Stav',
+      description: 'Stav inzerátu nastavený uživatelem: active = aktivní, suspend = pozastaven.',
+      dataType: 'STRING',
+      group: 'ads',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'adf_adStatus',
+      label: 'Inzerát: Schválení',
+      description: 'Redakční stav inzerátu: allow = schválen, waiting = čeká na schválení, deny = zamítnut, noactive = neaktivní (pozastaven kampaní/sestavou).',
+      dataType: 'STRING',
+      group: 'ads',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'adf_isDeleted',
+      label: 'Inzerát: Smazán',
+      description: 'Zda je inzerát smazán: true = smazán, false = aktivní záznam.',
+      dataType: 'STRING',
+      group: 'ads',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'adf_headline1',
+      label: 'Inzerát: Nadpis 1',
+      description: 'První nadpis textového inzerátu (ETA).',
+      dataType: 'STRING',
+      group: 'ads',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'adf_headline2',
+      label: 'Inzerát: Nadpis 2',
+      description: 'Druhý nadpis textového inzerátu (ETA).',
+      dataType: 'STRING',
+      group: 'ads',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'adf_headline3',
+      label: 'Inzerát: Nadpis 3',
+      description: 'Třetí nadpis textového inzerátu (ETA).',
+      dataType: 'STRING',
+      group: 'ads',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'adf_description',
+      label: 'Inzerát: Popis',
+      description: 'Hlavní text popisku inzerátu (ETA).',
+      dataType: 'STRING',
+      group: 'ads',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'adf_description2',
+      label: 'Inzerát: Popis 2',
+      description: 'Druhý popisek inzerátu (ETA).',
+      dataType: 'STRING',
+      group: 'ads',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'adf_path1',
+      label: 'Inzerát: Cesta 1',
+      description: 'První část zobrazované URL cesty inzerátu (ETA).',
+      dataType: 'STRING',
+      group: 'ads',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'adf_path2',
+      label: 'Inzerát: Cesta 2',
+      description: 'Druhá část zobrazované URL cesty inzerátu (ETA).',
+      dataType: 'STRING',
+      group: 'ads',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'adf_finalUrl',
+      label: 'Inzerát: Cílová URL',
+      description: 'Cílová URL inzerátu.',
+      dataType: 'STRING',
+      group: 'ads',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'adf_businessName',
+      label: 'Inzerát: Název firmy',
+      description: 'Název firmy u chytrého inzerátu (Smart Ad).',
+      dataType: 'STRING',
+      group: 'ads',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'adf_impressions',
+      label: 'Inzerát: Zobrazení',
+      description: 'Počet zobrazení inzerátu za zvolené období.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'adf_clicks',
+      label: 'Inzerát: Prokliky',
+      description: 'Počet prokliků inzerátu za zvolené období.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'adf_ctr',
+      label: 'Inzerát: CTR',
+      description: 'Míra prokliku = prokliky / zobrazení (%).',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'adf_totalMoney_kc',
+      label: 'Inzerát: Celková cena (Kč)',
+      description: 'Celkové náklady inzerátu za zvolené období v Kč.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
+    },
+    {
+      name: 'adf_avgCpc_kc',
+      label: 'Inzerát: Průměrná CPC (Kč)',
+      description: 'Průměrná cena za proklik v Kč.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'adf_avgPosition',
+      label: 'Inzerát: Průměrná pozice',
+      description: 'Průměrná pozice inzerátu ve výsledcích vyhledávání.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'adf_conversions',
+      label: 'Inzerát: Konverze',
+      description: 'Celkový počet konverzí přiřazených inzerátu za zvolené období.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'adf_conversionValue_kc',
+      label: 'Inzerát: Hodnota konverzí (Kč)',
+      description: 'Celková hodnota konverzí přiřazených inzerátu v Kč.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
+    },
+    {
+      name: 'adf_conversionPrice_kc',
+      label: 'Inzerát: Cena konverze (Kč)',
+      description: 'Průměrná cena za jednu konverzi = náklady / konverze (Kč).',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'adf_conversionRatio',
+      label: 'Inzerát: Konverzní poměr',
+      description: 'Podíl konverzí na proklikech = konverze / prokliky.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'adf_pno',
+      label: 'Inzerát: PNO (náklady/hodnota)',
+      description: 'Podíl nákladů na obratu = náklady / hodnota konverzí × 100.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'adf_clickMoney_kc',
+      label: 'Inzerát: Náklady prokliků ke konverzi (Kč)',
+      description: 'Náklady za prokliky přiřazené ke konverzím inzerátu v Kč.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
     }
   ];
 

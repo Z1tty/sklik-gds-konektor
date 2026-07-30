@@ -25,6 +25,26 @@ var FenixClient = function(getTokenFn, Log) {
   };
 
   /**
+   * Handles 429 rate-limit response: sleeps and calls retryFn with incremented count.
+   * Returns the retry result, or null if retry limit (3) reached.
+   * @param {HTTPResponse} response
+   * @param {number} retryCount
+   * @param {function} retryFn  function(newRetryCount) => result
+   * @return {*|null}
+   */
+  this._handle429 = function(response, retryCount, retryFn) {
+    retryCount = retryCount || 0;
+    if (retryCount >= 3) { return null; }
+    var headers = response.getHeaders();
+    var waitMs = (headers['Retry-After'] || headers['retry-after'])
+      ? parseInt(headers['Retry-After'] || headers['retry-after']) * 1000
+      : Math.pow(2, retryCount + 1) * 1000;
+    this.Log.addRecord('Fenix: rate limit, čekám ' + (waitMs / 1000) + 's (pokus ' + (retryCount + 1) + '/3)', true, 'FenixClient');
+    Utilities.sleep(waitMs);
+    return retryFn(retryCount + 1);
+  };
+
+  /**
    * Serializes queryParams into a query string.
    * Array values are expanded as repeated keys: a=x&a=y
    */
@@ -78,16 +98,11 @@ var FenixClient = function(getTokenFn, Log) {
     }
 
     if (code === 429) {
-      retryCount = retryCount || 0;
-      if (retryCount < 3) {
-        var headers = response.getHeaders();
-        var waitMs = (headers['Retry-After'] || headers['retry-after'])
-          ? parseInt(headers['Retry-After'] || headers['retry-after']) * 1000
-          : Math.pow(2, retryCount + 1) * 1000;
-        this.Log.addRecord('Fenix: rate limit, čekám ' + (waitMs / 1000) + 's (pokus ' + (retryCount + 1) + '/3)', true, 'FenixClient.fetchOne');
-        Utilities.sleep(waitMs);
-        return this.fetchOne(path, queryParams, retryCount + 1);
-      }
+      var self = this;
+      var retryResult = this._handle429(response, retryCount, function(rc) {
+        return self.fetchOne(path, queryParams, rc);
+      });
+      if (retryResult !== null) { return retryResult; }
     }
 
     if (code !== 200) {
@@ -132,16 +147,11 @@ var FenixClient = function(getTokenFn, Log) {
     }
 
     if (code === 429) {
-      retryCount = retryCount || 0;
-      if (retryCount < 3) {
-        var headers = response.getHeaders();
-        var waitMs = (headers['Retry-After'] || headers['retry-after'])
-          ? parseInt(headers['Retry-After'] || headers['retry-after']) * 1000
-          : Math.pow(2, retryCount + 1) * 1000;
-        this.Log.addRecord('Fenix: rate limit, čekám ' + (waitMs / 1000) + 's (pokus ' + (retryCount + 1) + '/3)', true, 'FenixClient.fetchPage');
-        Utilities.sleep(waitMs);
-        return this.fetchPage(path, queryParams, offset, retryCount + 1);
-      }
+      var self = this;
+      var retryResult = this._handle429(response, retryCount, function(rc) {
+        return self.fetchPage(path, queryParams, offset, rc);
+      });
+      if (retryResult !== null) { return retryResult; }
     }
 
     if (code !== 200) {
