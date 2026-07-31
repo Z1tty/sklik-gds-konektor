@@ -19,8 +19,8 @@ function getConfig(request) {
         type: "TEXTINPUT",
         name: "userId",
         displayName: "UserId (volitelné)",
-        text: "ID účtu, jehož data chcete zobrazit. Nechte prázdné pro vlastní účet.",
-        helpText: "ID účtu zjistíte v nastavení Skliku nebo v URL při přepnutí účtu.",
+        text: "ID Sklik účtu, jehož data chcete zobrazit.",
+        helpText: "Volitelné. Prázdné = konektor si vaše UserId zjistí sám přes Fenix API (GET /user/me). Pro agenturní přepnutí do klientského účtu zadejte UserId klienta.",
         placeholder: "Prázdné = vlastní účet"
       },
       {

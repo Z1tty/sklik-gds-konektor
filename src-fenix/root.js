@@ -109,7 +109,23 @@ var Root = function (rConfigParams, sklikDataSchema, rFields, rDateRange) {
         .throwException();
       return false;
     }
-    this.Log.addCaption('Fenix token nalezen');
+    if (!this.userId) {
+      try {
+        var tempUser = new UserApi(this.fenixToken, null, this.Log);
+        var me = tempUser.getMe();
+        if (!me || !me.userId) { throw new Error('/user/me response missing userId: ' + JSON.stringify(me)); }
+        this.userId = me.userId;
+        this.Log.addRecord('Fenix: userId auto-resolved z /user/me → ' + this.userId, true, 'Root.validateToken');
+      } catch (e) {
+        DataStudioApp.createCommunityConnector()
+          .newUserError()
+          .setText('Nepodařilo se automaticky zjistit UserId přes Fenix API. Zkontrolujte platnost Fenix tokenu, nebo zadejte UserId ručně.')
+          .setDebugText('Auto-resolve userId failed: ' + e.message)
+          .throwException();
+        return false;
+      }
+    }
+    this.Log.addCaption('Fenix token OK, userId=' + this.userId);
     return true;
   }
 
