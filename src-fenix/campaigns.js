@@ -7,8 +7,20 @@ Author: Josef Matoušek
 // Attributes requested from GET /sklik/campaigns/
 var CAMPAIGN_ATTRS = [
   'id', 'name', 'status', 'isDeleted', 'type',
+  'totalBudget', 'exhaustedTotalBudget', 'totalClicks', 'actualClicks',
+  'startDate', 'endDate', 'createDate', 'deleteDate',
+  'paymentMethod', 'adSelection', 'scheduleEnabled', 'videoFormat',
+  'maxPno', 'defaultBudgetId',
   'impressions', 'clicks', 'totalMoney', 'avgCpc', 'ctr', 'avgPosition',
-  'impressionMoney', 'avgCpt',
+  'impressionMoney', 'avgCpt', 'clickMoney',
+  'impressionShare', 'missedPrice',
+  'exhaustedBudgetCount', 'exhaustedBudgetShare',
+  'stoppedByScheduleCount', 'stoppedByScheduleShare',
+  'underForestThresholdCount', 'underForestThresholdShare',
+  'skips', 'views', 'engagement', 'watchTime',
+  'viewRate', 'skipRate', 'avgWatchTime', 'avgCostPerView',
+  'viewershipFirstQuartile', 'viewershipMidpoint', 'viewershipThirdQuartile', 'viewershipComplete',
+  'viewershipRateFirstQuartile', 'viewershipRateMidpoint', 'viewershipRateThirdQuartile', 'viewershipRateComplete',
   'networks.fulltext.impressions', 'networks.fulltext.clicks', 'networks.fulltext.totalMoney', 'networks.fulltext.avgPosition',
   'networks.context.impressions',  'networks.context.clicks',  'networks.context.totalMoney',  'networks.context.avgPosition',
   'networks.video.impressions',    'networks.video.clicks',    'networks.video.totalMoney',    'networks.video.avgPosition',
@@ -68,12 +80,29 @@ function expandCampaignConversions(campaign) {
     }
   });
 
+  var meta = {
+    cgf_campaignId:              campaign.id,
+    cgf_campaignName:            campaign.name || '',
+    cgf_campaignStatus:          campaign.status || '',
+    cgf_campaignIsDeleted:       campaign.isDeleted ? 'true' : 'false',
+    cgf_campaignType:            campaign.type || '',
+    cgf_totalBudget_kc:          (campaign.totalBudget          || 0) * 0.01,
+    cgf_exhaustedTotalBudget_kc: (campaign.exhaustedTotalBudget || 0) * 0.01,
+    cgf_totalClicks:             campaign.totalClicks  || 0,
+    cgf_actualClicks:            campaign.actualClicks || 0,
+    cgf_startDate:               _dateOnly(campaign.startDate),
+    cgf_endDate:                 _dateOnly(campaign.endDate),
+    cgf_createDate:              _dateOnly(campaign.createDate),
+    cgf_deleteDate:              _dateOnly(campaign.deleteDate),
+    cgf_paymentMethod:           campaign.paymentMethod || '',
+    cgf_adSelection:             campaign.adSelection   || '',
+    cgf_scheduleEnabled:         campaign.scheduleEnabled ? 'true' : 'false',
+    cgf_videoFormat:             campaign.videoFormat || '',
+    cgf_maxPno:                  campaign.maxPno         || 0,
+    cgf_defaultBudgetId:         campaign.defaultBudgetId || 0
+  };
+
   var summaryRow = {
-    cgf_campaignId:          campaign.id,
-    cgf_campaignName:        campaign.name || '',
-    cgf_campaignStatus:      campaign.status || '',
-    cgf_campaignIsDeleted:   campaign.isDeleted ? 'true' : 'false',
-    cgf_campaignType:        campaign.type || '',
     cgf_impressions:         campaign.impressions || 0,
     cgf_clicks:              campaign.clicks      || 0,
     cgf_ctr:                 campaign.ctr         || 0,
@@ -82,6 +111,31 @@ function expandCampaignConversions(campaign) {
     cgf_avgPosition:         campaign.avgPosition || 0,
     cgf_impressionMoney_kc:  (campaign.impressionMoney || 0) * 0.01,
     cgf_avgCpt_kc:           (campaign.avgCpt          || 0) * 0.01,
+    cgf_clickMoney_kc:       (campaign.clickMoney      || 0) * 0.01,
+    cgf_impressionShare:              campaign.impressionShare              || 0,
+    cgf_missedPrice_kc:               (campaign.missedPrice                  || 0) * 0.01,
+    cgf_exhaustedBudgetCount:         campaign.exhaustedBudgetCount         || 0,
+    cgf_exhaustedBudgetShare:         campaign.exhaustedBudgetShare         || 0,
+    cgf_stoppedByScheduleCount:       campaign.stoppedByScheduleCount       || 0,
+    cgf_stoppedByScheduleShare:       campaign.stoppedByScheduleShare       || 0,
+    cgf_underForestThresholdCount:    campaign.underForestThresholdCount    || 0,
+    cgf_underForestThresholdShare:    campaign.underForestThresholdShare    || 0,
+    cgf_skips:                    campaign.skips        || 0,
+    cgf_views:                    campaign.views        || 0,
+    cgf_engagement:               campaign.engagement   || 0,
+    cgf_watchTime_sec:            campaign.watchTime    || 0,
+    cgf_viewRate:                 campaign.viewRate     || 0,
+    cgf_skipRate:                 campaign.skipRate     || 0,
+    cgf_avgWatchTime_sec:         campaign.avgWatchTime || 0,
+    cgf_avgCostPerView_kc:        (campaign.avgCostPerView || 0) * 0.01,
+    cgf_viewership_q1:            campaign.viewershipFirstQuartile || 0,
+    cgf_viewership_q2:            campaign.viewershipMidpoint      || 0,
+    cgf_viewership_q3:            campaign.viewershipThirdQuartile || 0,
+    cgf_viewership_complete:      campaign.viewershipComplete      || 0,
+    cgf_viewershipRate_q1:        campaign.viewershipRateFirstQuartile || 0,
+    cgf_viewershipRate_q2:        campaign.viewershipRateMidpoint      || 0,
+    cgf_viewershipRate_q3:        campaign.viewershipRateThirdQuartile || 0,
+    cgf_viewershipRate_complete:  campaign.viewershipRateComplete      || 0,
     cgf_convName:            '',
     cgf_semEventName:        '',
     cgf_conversions:         0,
@@ -90,6 +144,7 @@ function expandCampaignConversions(campaign) {
     cgf_conversionRatio:     campaign.clicks > 0 ? totalConversions / campaign.clicks : 0,
     cgf_pno:                 totalConversionValue > 0 ? (campaign.totalMoney || 0) / totalConversionValue * 100 : 0
   };
+  for (var mk in meta) { summaryRow[mk] = meta[mk]; }
   for (var evt in SEM_EVENT_MAP) {
     var sfx = SEM_EVENT_MAP[evt];
     summaryRow['cgf_conv_'        + sfx]        = byEventCount[sfx] || 0;
@@ -100,11 +155,6 @@ function expandCampaignConversions(campaign) {
 
   convList.forEach(function(conv) {
     var convRow = {
-      cgf_campaignId:          campaign.id,
-      cgf_campaignName:        campaign.name || '',
-      cgf_campaignStatus:      campaign.status || '',
-      cgf_campaignIsDeleted:   campaign.isDeleted ? 'true' : 'false',
-      cgf_campaignType:        campaign.type || '',
       cgf_impressions:         0,
       cgf_clicks:              0,
       cgf_ctr:                 0,
@@ -113,6 +163,31 @@ function expandCampaignConversions(campaign) {
       cgf_avgPosition:         0,
       cgf_impressionMoney_kc:  0,
       cgf_avgCpt_kc:           0,
+      cgf_clickMoney_kc:       0,
+      cgf_impressionShare:              0,
+      cgf_missedPrice_kc:               0,
+      cgf_exhaustedBudgetCount:         0,
+      cgf_exhaustedBudgetShare:         0,
+      cgf_stoppedByScheduleCount:       0,
+      cgf_stoppedByScheduleShare:       0,
+      cgf_underForestThresholdCount:    0,
+      cgf_underForestThresholdShare:    0,
+      cgf_skips:                    0,
+      cgf_views:                    0,
+      cgf_engagement:               0,
+      cgf_watchTime_sec:            0,
+      cgf_viewRate:                 0,
+      cgf_skipRate:                 0,
+      cgf_avgWatchTime_sec:         0,
+      cgf_avgCostPerView_kc:        0,
+      cgf_viewership_q1:            0,
+      cgf_viewership_q2:            0,
+      cgf_viewership_q3:            0,
+      cgf_viewership_complete:      0,
+      cgf_viewershipRate_q1:        0,
+      cgf_viewershipRate_q2:        0,
+      cgf_viewershipRate_q3:        0,
+      cgf_viewershipRate_complete:  0,
       cgf_convName:            conv.name            || '',
       cgf_semEventName:        conv.semEventName    || '',
       cgf_conversions:         conv.conversions     || 0,
@@ -121,6 +196,7 @@ function expandCampaignConversions(campaign) {
       cgf_conversionRatio:    0,
       cgf_pno:                0
     };
+    for (var mk in meta) { convRow[mk] = meta[mk]; }
     for (var evt in SEM_EVENT_MAP) {
       var sfx = SEM_EVENT_MAP[evt];
       convRow['cgf_conv_'        + sfx]        = 0;

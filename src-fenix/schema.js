@@ -419,6 +419,318 @@ var Schema = function (config) {
       group: 'campaigns',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY', defaultAggregationType: 'AVG' }
     },
+    {
+      name: 'cgf_clickMoney_kc',
+      label: 'Kampaň: Náklady prokliků (Kč)',
+      description: 'Celkové náklady za prokliky v Kč. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
+    },
+    {
+      name: 'cgf_impressionShare',
+      label: 'Kampaň: Podíl zobrazení',
+      description: 'Podíl získaných zobrazení z celkově dostupných (0–1). Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'cgf_missedPrice_kc',
+      label: 'Kampaň: Promarněné náklady (Kč)',
+      description: 'Odhadované náklady, které by kampaň utratila, kdyby neztrácela zobrazení kvůli nízkým nabídkám. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
+    },
+    {
+      name: 'cgf_exhaustedBudgetCount',
+      label: 'Kampaň: Dnů s vyčerpaným rozpočtem',
+      description: 'Počet dnů, kdy byl denní rozpočet zcela vyčerpán. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'cgf_exhaustedBudgetShare',
+      label: 'Kampaň: Podíl dnů s vyčerpaným rozpočtem',
+      description: 'Podíl dnů, kdy byl denní rozpočet zcela vyčerpán (0–1). Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'cgf_stoppedByScheduleCount',
+      label: 'Kampaň: Dnů zastavených plánovačem',
+      description: 'Počet dnů, kdy byla kampaň zastavena časovým plánem. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'cgf_stoppedByScheduleShare',
+      label: 'Kampaň: Podíl dnů zastavených plánovačem',
+      description: 'Podíl dnů, kdy byla kampaň zastavena časovým plánem (0–1). Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'cgf_underForestThresholdCount',
+      label: 'Kampaň: Dnů pod prahem viditelnosti',
+      description: 'Počet dnů, kdy byla kampaň pod prahem viditelnosti („forest threshold"). Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'cgf_underForestThresholdShare',
+      label: 'Kampaň: Podíl dnů pod prahem viditelnosti',
+      description: 'Podíl dnů, kdy byla kampaň pod prahem viditelnosti (0–1). Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'cgf_totalBudget_kc',
+      label: 'Kampaň: Celkový rozpočet (Kč)',
+      description: 'Celkový nastavený rozpočet kampaně v Kč (může být neomezený = 0).',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
+    },
+    {
+      name: 'cgf_exhaustedTotalBudget_kc',
+      label: 'Kampaň: Vyčerpaný celkový rozpočet (Kč)',
+      description: 'Kolik z celkového rozpočtu už kampaň utratila (Kč).',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
+    },
+    {
+      name: 'cgf_totalClicks',
+      label: 'Kampaň: Limit celkových prokliků',
+      description: 'Nastavený limit celkových prokliků pro kampaň (0 = neomezeno).',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'cgf_actualClicks',
+      label: 'Kampaň: Čerpané prokliky z limitu',
+      description: 'Kolik prokliků už kampaň spotřebovala z limitu totalClicks.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'cgf_startDate',
+      label: 'Kampaň: Datum spuštění',
+      description: 'Nastavené datum spuštění kampaně (YYYY-MM-DD).',
+      dataType: 'STRING',
+      group: 'campaigns',
+      semantics: { conceptType: 'DIMENSION', semanticType: 'YEAR_MONTH_DAY', semanticGroup: 'DATETIME' }
+    },
+    {
+      name: 'cgf_endDate',
+      label: 'Kampaň: Datum ukončení',
+      description: 'Nastavené datum ukončení kampaně (YYYY-MM-DD).',
+      dataType: 'STRING',
+      group: 'campaigns',
+      semantics: { conceptType: 'DIMENSION', semanticType: 'YEAR_MONTH_DAY', semanticGroup: 'DATETIME' }
+    },
+    {
+      name: 'cgf_createDate',
+      label: 'Kampaň: Datum vytvoření',
+      description: 'Datum vytvoření kampaně (YYYY-MM-DD).',
+      dataType: 'STRING',
+      group: 'campaigns',
+      semantics: { conceptType: 'DIMENSION', semanticType: 'YEAR_MONTH_DAY', semanticGroup: 'DATETIME' }
+    },
+    {
+      name: 'cgf_deleteDate',
+      label: 'Kampaň: Datum smazání',
+      description: 'Datum smazání kampaně (YYYY-MM-DD). Prázdné pokud není smazána.',
+      dataType: 'STRING',
+      group: 'campaigns',
+      semantics: { conceptType: 'DIMENSION', semanticType: 'YEAR_MONTH_DAY', semanticGroup: 'DATETIME' }
+    },
+    {
+      name: 'cgf_paymentMethod',
+      label: 'Kampaň: Způsob zpoplatnění',
+      description: 'Model účtování: cpc = za proklik, cpm = za tisíc zobrazení, exclusive = exkluzivní.',
+      dataType: 'STRING',
+      group: 'campaigns',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'cgf_adSelection',
+      label: 'Kampaň: Střídání inzerátů',
+      description: 'Strategie výběru inzerátu: weighted, random, cpa, cos.',
+      dataType: 'STRING',
+      group: 'campaigns',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'cgf_scheduleEnabled',
+      label: 'Kampaň: Časové plánování zapnuté',
+      description: 'Zda je zapnutý časový plán zobrazování: true/false.',
+      dataType: 'STRING',
+      group: 'campaigns',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'cgf_videoFormat',
+      label: 'Kampaň: Formát videa',
+      description: 'Formát videa u videokampaně: instream, outstream, both.',
+      dataType: 'STRING',
+      group: 'campaigns',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'cgf_maxPno',
+      label: 'Kampaň: Cíl max PNO (%)',
+      description: 'Nastavený cíl maximálního PNO (podíl nákladů na obratu) v procentech.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'cgf_defaultBudgetId',
+      label: 'Kampaň: ID výchozího rozpočtu',
+      description: 'ID výchozího rozpočtu přiřazeného kampani.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'DIMENSION' }
+    },
+    {
+      name: 'cgf_skips',
+      label: 'Kampaň: Video přeskočení',
+      description: 'Celkový počet přeskočení videoinzerátů. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'cgf_views',
+      label: 'Kampaň: Video zhlédnutí',
+      description: 'Celkový počet zhlédnutí videoinzerátů. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'cgf_engagement',
+      label: 'Kampaň: Video interakce',
+      description: 'Celkový počet interakcí (engagement) s videoinzeráty. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'cgf_watchTime_sec',
+      label: 'Kampaň: Video čas zhlédnutí (s)',
+      description: 'Celkový čas zhlédnutí videí v sekundách. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC', semanticType: 'DURATION' }
+    },
+    {
+      name: 'cgf_viewRate',
+      label: 'Kampaň: Video view rate',
+      description: 'Podíl zhlédnutí na zobrazení = views / impressions. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'cgf_skipRate',
+      label: 'Kampaň: Video skip rate',
+      description: 'Podíl přeskočení na zobrazení = skips / impressions. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'cgf_avgWatchTime_sec',
+      label: 'Kampaň: Video průměrný čas zhlédnutí (s)',
+      description: 'Průměrný čas zhlédnutí jednoho videa v sekundách. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC', semanticType: 'DURATION', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'cgf_avgCostPerView_kc',
+      label: 'Kampaň: Video průměrná cena za zhlédnutí (Kč)',
+      description: 'Průměrná cena za jedno video zhlédnutí (CPV) v Kč. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'cgf_viewership_q1',
+      label: 'Kampaň: Video 25 % zhlédnuto',
+      description: 'Kolikrát bylo video zhlédnuto do 25 %. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'cgf_viewership_q2',
+      label: 'Kampaň: Video 50 % zhlédnuto',
+      description: 'Kolikrát bylo video zhlédnuto do 50 %. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'cgf_viewership_q3',
+      label: 'Kampaň: Video 75 % zhlédnuto',
+      description: 'Kolikrát bylo video zhlédnuto do 75 %. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'cgf_viewership_complete',
+      label: 'Kampaň: Video 100 % zhlédnuto',
+      description: 'Kolikrát bylo video zhlédnuto do 100 %. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'cgf_viewershipRate_q1',
+      label: 'Kampaň: Video podíl 25 % zhlédnutí',
+      description: 'Podíl zhlédnutí, která dosáhla hranice 25 % (0–1). Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'cgf_viewershipRate_q2',
+      label: 'Kampaň: Video podíl 50 % zhlédnutí',
+      description: 'Podíl zhlédnutí, která dosáhla hranice 50 % (0–1). Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'cgf_viewershipRate_q3',
+      label: 'Kampaň: Video podíl 75 % zhlédnutí',
+      description: 'Podíl zhlédnutí, která dosáhla hranice 75 % (0–1). Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'cgf_viewershipRate_complete',
+      label: 'Kampaň: Video podíl 100 % zhlédnutí',
+      description: 'Podíl zhlédnutí, která dosáhla hranice 100 % (0–1). Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'campaigns',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
 
     /*
     * ######################################################
@@ -483,7 +795,7 @@ var Schema = function (config) {
       semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
     },
     {
-      name: 'gof_missedPrice',
+      name: 'gof_missedPrice_kc',
       label: 'Sestava: Promarněné náklady (Kč)',
       description: 'Odhadované náklady, které by sestava utratila, kdyby neztrácela zobrazení kvůli nízkým nabídkám.',
       dataType: 'NUMBER',
@@ -834,6 +1146,190 @@ var Schema = function (config) {
       group: 'groups',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY', defaultAggregationType: 'AVG' }
     },
+    {
+      name: 'gof_clickMoney_kc',
+      label: 'Sestava: Náklady prokliků (Kč)',
+      description: 'Celkové náklady za prokliky v Kč. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
+    },
+    {
+      name: 'gof_createDate',
+      label: 'Sestava: Datum vytvoření',
+      description: 'Datum vytvoření sestavy (YYYY-MM-DD).',
+      dataType: 'STRING',
+      group: 'groups',
+      semantics: { conceptType: 'DIMENSION', semanticType: 'YEAR_MONTH_DAY', semanticGroup: 'DATETIME' }
+    },
+    {
+      name: 'gof_deleteDate',
+      label: 'Sestava: Datum smazání',
+      description: 'Datum smazání sestavy (YYYY-MM-DD). Prázdné pokud není smazána.',
+      dataType: 'STRING',
+      group: 'groups',
+      semantics: { conceptType: 'DIMENSION', semanticType: 'YEAR_MONTH_DAY', semanticGroup: 'DATETIME' }
+    },
+    {
+      name: 'gof_firstDate',
+      label: 'Sestava: První datum se statistikou',
+      description: 'První den v období, kdy má sestava zaznamenanou statistiku (YYYY-MM-DD).',
+      dataType: 'STRING',
+      group: 'groups',
+      semantics: { conceptType: 'DIMENSION', semanticType: 'YEAR_MONTH_DAY', semanticGroup: 'DATETIME' }
+    },
+    {
+      name: 'gof_lastDate',
+      label: 'Sestava: Poslední datum se statistikou',
+      description: 'Poslední den v období, kdy má sestava zaznamenanou statistiku (YYYY-MM-DD).',
+      dataType: 'STRING',
+      group: 'groups',
+      semantics: { conceptType: 'DIMENSION', semanticType: 'YEAR_MONTH_DAY', semanticGroup: 'DATETIME' }
+    },
+    {
+      name: 'gof_cpc_kc',
+      label: 'Sestava: Max CPC (Kč)',
+      description: 'Maximální CPC nastavená na sestavě v Kč.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'gof_cpm_kc',
+      label: 'Sestava: Max CPM (Kč)',
+      description: 'Maximální CPM nastavená na sestavě v Kč.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'gof_skips',
+      label: 'Sestava: Video přeskočení',
+      description: 'Celkový počet přeskočení videoinzerátů. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'gof_views',
+      label: 'Sestava: Video zhlédnutí',
+      description: 'Celkový počet zhlédnutí videoinzerátů. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'gof_engagement',
+      label: 'Sestava: Video interakce',
+      description: 'Celkový počet interakcí (engagement) s videoinzeráty. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'gof_watchTime_sec',
+      label: 'Sestava: Video čas zhlédnutí (s)',
+      description: 'Celkový čas zhlédnutí videí v sekundách. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC', semanticType: 'DURATION' }
+    },
+    {
+      name: 'gof_viewRate',
+      label: 'Sestava: Video view rate',
+      description: 'Podíl zhlédnutí na zobrazení = views / impressions. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'gof_skipRate',
+      label: 'Sestava: Video skip rate',
+      description: 'Podíl přeskočení na zobrazení = skips / impressions. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'gof_avgWatchTime_sec',
+      label: 'Sestava: Video průměrný čas zhlédnutí (s)',
+      description: 'Průměrný čas zhlédnutí jednoho videa v sekundách. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC', semanticType: 'DURATION', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'gof_avgCostPerView_kc',
+      label: 'Sestava: Video průměrná cena za zhlédnutí (Kč)',
+      description: 'Průměrná cena za jedno video zhlédnutí (CPV) v Kč. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'gof_viewership_q1',
+      label: 'Sestava: Video 25 % zhlédnuto',
+      description: 'Kolikrát bylo video zhlédnuto do 25 %. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'gof_viewership_q2',
+      label: 'Sestava: Video 50 % zhlédnuto',
+      description: 'Kolikrát bylo video zhlédnuto do 50 %. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'gof_viewership_q3',
+      label: 'Sestava: Video 75 % zhlédnuto',
+      description: 'Kolikrát bylo video zhlédnuto do 75 %. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'gof_viewership_complete',
+      label: 'Sestava: Video 100 % zhlédnuto',
+      description: 'Kolikrát bylo video zhlédnuto do 100 %. Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'gof_viewershipRate_q1',
+      label: 'Sestava: Video podíl 25 % zhlédnutí',
+      description: 'Podíl zhlédnutí, která dosáhla hranice 25 % (0–1). Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'gof_viewershipRate_q2',
+      label: 'Sestava: Video podíl 50 % zhlédnutí',
+      description: 'Podíl zhlédnutí, která dosáhla hranice 50 % (0–1). Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'gof_viewershipRate_q3',
+      label: 'Sestava: Video podíl 75 % zhlédnutí',
+      description: 'Podíl zhlédnutí, která dosáhla hranice 75 % (0–1). Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'gof_viewershipRate_complete',
+      label: 'Sestava: Video podíl 100 % zhlédnutí',
+      description: 'Podíl zhlédnutí, která dosáhla hranice 100 % (0–1). Vyplněno pouze na souhrnném řádku.',
+      dataType: 'NUMBER',
+      group: 'groups',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
 
     /*
     * ######################################################
@@ -1122,6 +1618,198 @@ var Schema = function (config) {
       dataType: 'NUMBER',
       group: 'ads',
       semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
+    },
+    {
+      name: 'adf_impressionMoney_kc',
+      label: 'Inzerát: Náklady za zobrazení (Kč)',
+      description: 'Celkové náklady za zobrazení (CPT/CPM model) v Kč.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
+    },
+    {
+      name: 'adf_avgCpt_kc',
+      label: 'Inzerát: Průměrná CPT (Kč)',
+      description: 'Průměrná cena za tisíc zobrazení (CPT) v Kč.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'adf_startDate',
+      label: 'Inzerát: Datum spuštění',
+      description: 'Nastavené datum spuštění inzerátu (YYYY-MM-DD).',
+      dataType: 'STRING',
+      group: 'ads',
+      semantics: { conceptType: 'DIMENSION', semanticType: 'YEAR_MONTH_DAY', semanticGroup: 'DATETIME' }
+    },
+    {
+      name: 'adf_endDate',
+      label: 'Inzerát: Datum ukončení',
+      description: 'Nastavené datum ukončení inzerátu (YYYY-MM-DD).',
+      dataType: 'STRING',
+      group: 'ads',
+      semantics: { conceptType: 'DIMENSION', semanticType: 'YEAR_MONTH_DAY', semanticGroup: 'DATETIME' }
+    },
+    {
+      name: 'adf_createDate',
+      label: 'Inzerát: Datum vytvoření',
+      description: 'Datum vytvoření inzerátu (YYYY-MM-DD).',
+      dataType: 'STRING',
+      group: 'ads',
+      semantics: { conceptType: 'DIMENSION', semanticType: 'YEAR_MONTH_DAY', semanticGroup: 'DATETIME' }
+    },
+    {
+      name: 'adf_deleteDate',
+      label: 'Inzerát: Datum smazání',
+      description: 'Datum smazání inzerátu (YYYY-MM-DD). Prázdné pokud není smazán.',
+      dataType: 'STRING',
+      group: 'ads',
+      semantics: { conceptType: 'DIMENSION', semanticType: 'YEAR_MONTH_DAY', semanticGroup: 'DATETIME' }
+    },
+    {
+      name: 'adf_firstDate',
+      label: 'Inzerát: První datum se statistikou',
+      description: 'První den v období, kdy má inzerát zaznamenanou statistiku (YYYY-MM-DD).',
+      dataType: 'STRING',
+      group: 'ads',
+      semantics: { conceptType: 'DIMENSION', semanticType: 'YEAR_MONTH_DAY', semanticGroup: 'DATETIME' }
+    },
+    {
+      name: 'adf_lastDate',
+      label: 'Inzerát: Poslední datum se statistikou',
+      description: 'Poslední den v období, kdy má inzerát zaznamenanou statistiku (YYYY-MM-DD).',
+      dataType: 'STRING',
+      group: 'ads',
+      semantics: { conceptType: 'DIMENSION', semanticType: 'YEAR_MONTH_DAY', semanticGroup: 'DATETIME' }
+    },
+    {
+      name: 'adf_skips',
+      label: 'Inzerát: Video přeskočení',
+      description: 'Celkový počet přeskočení videoinzerátu.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'adf_views',
+      label: 'Inzerát: Video zhlédnutí',
+      description: 'Celkový počet zhlédnutí videoinzerátu.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'adf_engagement',
+      label: 'Inzerát: Video interakce',
+      description: 'Celkový počet interakcí (engagement) s videoinzerátem.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'adf_watchTime_sec',
+      label: 'Inzerát: Video čas zhlédnutí (s)',
+      description: 'Celkový čas zhlédnutí videí v sekundách.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC', semanticType: 'DURATION' }
+    },
+    {
+      name: 'adf_viewRate',
+      label: 'Inzerát: Video view rate',
+      description: 'Podíl zhlédnutí na zobrazení = views / impressions.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'adf_skipRate',
+      label: 'Inzerát: Video skip rate',
+      description: 'Podíl přeskočení na zobrazení = skips / impressions.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'adf_avgWatchTime_sec',
+      label: 'Inzerát: Video průměrný čas zhlédnutí (s)',
+      description: 'Průměrný čas zhlédnutí jednoho videa v sekundách.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC', semanticType: 'DURATION', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'adf_avgCostPerView_kc',
+      label: 'Inzerát: Video průměrná cena za zhlédnutí (Kč)',
+      description: 'Průměrná cena za jedno video zhlédnutí (CPV) v Kč.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'adf_viewership_q1',
+      label: 'Inzerát: Video 25 % zhlédnuto',
+      description: 'Kolikrát bylo video zhlédnuto do 25 %.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'adf_viewership_q2',
+      label: 'Inzerát: Video 50 % zhlédnuto',
+      description: 'Kolikrát bylo video zhlédnuto do 50 %.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'adf_viewership_q3',
+      label: 'Inzerát: Video 75 % zhlédnuto',
+      description: 'Kolikrát bylo video zhlédnuto do 75 %.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'adf_viewership_complete',
+      label: 'Inzerát: Video 100 % zhlédnuto',
+      description: 'Kolikrát bylo video zhlédnuto do 100 %.',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'adf_viewershipRate_q1',
+      label: 'Inzerát: Video podíl 25 % zhlédnutí',
+      description: 'Podíl zhlédnutí, která dosáhla hranice 25 % (0–1).',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'adf_viewershipRate_q2',
+      label: 'Inzerát: Video podíl 50 % zhlédnutí',
+      description: 'Podíl zhlédnutí, která dosáhla hranice 50 % (0–1).',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'adf_viewershipRate_q3',
+      label: 'Inzerát: Video podíl 75 % zhlédnutí',
+      description: 'Podíl zhlédnutí, která dosáhla hranice 75 % (0–1).',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'adf_viewershipRate_complete',
+      label: 'Inzerát: Video podíl 100 % zhlédnutí',
+      description: 'Podíl zhlédnutí, která dosáhla hranice 100 % (0–1).',
+      dataType: 'NUMBER',
+      group: 'ads',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
     }
   ];
 

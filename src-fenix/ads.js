@@ -8,7 +8,13 @@ var AD_ATTRS = [
   'id', 'status', 'adStatus', 'isDeleted', 'type',
   'headline1', 'headline2', 'headline3', 'description', 'description2',
   'path1', 'path2', 'finalUrl', 'businessName',
+  'startDate', 'endDate', 'createDate', 'deleteDate', 'firstDate', 'lastDate',
   'impressions', 'clicks', 'totalMoney', 'avgCpc', 'ctr', 'avgPosition',
+  'impressionMoney', 'avgCpt',
+  'skips', 'views', 'engagement', 'watchTime',
+  'viewRate', 'skipRate', 'avgWatchTime', 'avgCostPerView',
+  'viewershipFirstQuartile', 'viewershipMidpoint', 'viewershipThirdQuartile', 'viewershipComplete',
+  'viewershipRateFirstQuartile', 'viewershipRateMidpoint', 'viewershipRateThirdQuartile', 'viewershipRateComplete',
   'conversions', 'conversionValue', 'conversionPrice', 'conversionRatio', 'pno', 'clickMoney'
 ];
 
@@ -77,12 +83,16 @@ function fetchAds(userApi, dateFrom, dateTo, groups, ignoreDeleted) {
       if (code === 200) {
         var body = JSON.parse(responses[r].getContentText());
         var ads = body.items || [];
+        Log.addRecord('Fenix inzeráty: sestava ' + grp.id + ' → ' + ads.length + ' inzerátů', false, 'fetchAds');
+        if (ads.length > 0) {
+          Log.addRecord('Fenix inzeráty: první inzerát = ' + JSON.stringify(ads[0]), false, 'fetchAds');
+        }
         ads.forEach(function(a) { a._campaignId = grp._campaignId; a._groupId = grp.id; });
         allAds = allAds.concat(ads);
       } else if (code === 429) {
         retryGroups.push(grp);
       } else {
-        Log.addRecord('Fenix inzeráty HTTP ' + code + ' pro sestavu ' + grp.id, true, 'fetchAds');
+        Log.addRecord('Fenix inzeráty HTTP ' + code + ' pro sestavu ' + grp.id + ': ' + responses[r].getContentText().substr(0, 200), true, 'fetchAds');
       }
     }
     for (var fi = responses.length; fi < batchGroups.length; fi++) {
@@ -133,12 +143,36 @@ function mapAdToRow(ad) {
     adf_path2:              ad.path2            || '',
     adf_finalUrl:           ad.finalUrl         || '',
     adf_businessName:       ad.businessName     || '',
+    adf_startDate:          _dateOnly(ad.startDate),
+    adf_endDate:            _dateOnly(ad.endDate),
+    adf_createDate:         _dateOnly(ad.createDate),
+    adf_deleteDate:         _dateOnly(ad.deleteDate),
+    adf_firstDate:          _dateOnly(ad.firstDate),
+    adf_lastDate:           _dateOnly(ad.lastDate),
     adf_impressions:        ad.impressions       || 0,
     adf_clicks:             ad.clicks            || 0,
     adf_ctr:                ad.ctr               || 0,
     adf_totalMoney_kc:      (ad.totalMoney       || 0) * 0.01,
     adf_avgCpc_kc:          (ad.avgCpc           || 0) * 0.01,
     adf_avgPosition:        ad.avgPosition       || 0,
+    adf_impressionMoney_kc: (ad.impressionMoney  || 0) * 0.01,
+    adf_avgCpt_kc:          (ad.avgCpt           || 0) * 0.01,
+    adf_skips:                    ad.skips        || 0,
+    adf_views:                    ad.views        || 0,
+    adf_engagement:               ad.engagement   || 0,
+    adf_watchTime_sec:            ad.watchTime    || 0,
+    adf_viewRate:                 ad.viewRate     || 0,
+    adf_skipRate:                 ad.skipRate     || 0,
+    adf_avgWatchTime_sec:         ad.avgWatchTime || 0,
+    adf_avgCostPerView_kc:        (ad.avgCostPerView || 0) * 0.01,
+    adf_viewership_q1:            ad.viewershipFirstQuartile || 0,
+    adf_viewership_q2:            ad.viewershipMidpoint      || 0,
+    adf_viewership_q3:            ad.viewershipThirdQuartile || 0,
+    adf_viewership_complete:      ad.viewershipComplete      || 0,
+    adf_viewershipRate_q1:        ad.viewershipRateFirstQuartile || 0,
+    adf_viewershipRate_q2:        ad.viewershipRateMidpoint      || 0,
+    adf_viewershipRate_q3:        ad.viewershipRateThirdQuartile || 0,
+    adf_viewershipRate_complete:  ad.viewershipRateComplete      || 0,
     adf_conversions:        ad.conversions       || 0,
     adf_conversionValue_kc: (ad.conversionValue  || 0) * 0.01,
     adf_conversionPrice_kc: (ad.conversionPrice  || 0) * 0.01,

@@ -7,12 +7,18 @@ Author: Josef Matoušek
 // Attributes requested from GET /sklik/campaigns/{campaignId}/groups/
 var GROUP_ATTRS = [
   'id', 'name', 'status', 'isDeleted',
+  'createDate', 'deleteDate', 'firstDate', 'lastDate',
+  'cpc', 'cpm',
   'impressions', 'clicks', 'totalMoney', 'avgCpc', 'ctr', 'avgPosition',
-  'impressionMoney', 'avgCpt',
+  'impressionMoney', 'avgCpt', 'clickMoney',
   'impressionShare', 'winRate', 'missedPrice',
   'exhaustedBudgetCount', 'exhaustedBudgetShare',
   'stoppedByScheduleCount', 'stoppedByScheduleShare',
   'underForestThresholdCount', 'underForestThresholdShare',
+  'skips', 'views', 'engagement', 'watchTime',
+  'viewRate', 'skipRate', 'avgWatchTime', 'avgCostPerView',
+  'viewershipFirstQuartile', 'viewershipMidpoint', 'viewershipThirdQuartile', 'viewershipComplete',
+  'viewershipRateFirstQuartile', 'viewershipRateMidpoint', 'viewershipRateThirdQuartile', 'viewershipRateComplete',
   'conversionIds.conversions', 'conversionIds.conversionValue',
   'conversionIds.conversionPrice', 'conversionIds.conversionRatio',
   'conversionIds.name', 'conversionIds.semEventName'
@@ -143,12 +149,21 @@ function expandGroupConversions(group) {
     }
   });
 
-  var summaryRow = {
+  var meta = {
     gof_campaignId:          campaignId,
     gof_groupId:             group.id,
     gof_groupName:           group.name || '',
     gof_groupStatus:         group.status || '',
     gof_groupIsDeleted:      group.isDeleted ? 'true' : 'false',
+    gof_createDate:          _dateOnly(group.createDate),
+    gof_deleteDate:          _dateOnly(group.deleteDate),
+    gof_firstDate:           _dateOnly(group.firstDate),
+    gof_lastDate:            _dateOnly(group.lastDate),
+    gof_cpc_kc:              (group.cpc || 0) * 0.01,
+    gof_cpm_kc:              (group.cpm || 0) * 0.01
+  };
+
+  var summaryRow = {
     gof_impressions:         group.impressions || 0,
     gof_clicks:              group.clicks      || 0,
     gof_ctr:                 group.ctr         || 0,
@@ -157,15 +172,32 @@ function expandGroupConversions(group) {
     gof_avgPosition:         group.avgPosition || 0,
     gof_impressionMoney_kc:  (group.impressionMoney || 0) * 0.01,
     gof_avgCpt_kc:           (group.avgCpt          || 0) * 0.01,
+    gof_clickMoney_kc:       (group.clickMoney      || 0) * 0.01,
     gof_impressionShare:          group.impressionShare          || 0,
     gof_winRate:                  group.winRate                  || 0,
-    gof_missedPrice:              (group.missedPrice              || 0) * 0.01,
+    gof_missedPrice_kc:           (group.missedPrice              || 0) * 0.01,
     gof_exhaustedBudgetCount:     group.exhaustedBudgetCount     || 0,
     gof_exhaustedBudgetShare:     group.exhaustedBudgetShare     || 0,
     gof_stoppedByScheduleCount:   group.stoppedByScheduleCount   || 0,
     gof_stoppedByScheduleShare:   group.stoppedByScheduleShare   || 0,
     gof_underForestThresholdCount: group.underForestThresholdCount || 0,
     gof_underForestThresholdShare: group.underForestThresholdShare || 0,
+    gof_skips:                    group.skips        || 0,
+    gof_views:                    group.views        || 0,
+    gof_engagement:               group.engagement   || 0,
+    gof_watchTime_sec:            group.watchTime    || 0,
+    gof_viewRate:                 group.viewRate     || 0,
+    gof_skipRate:                 group.skipRate     || 0,
+    gof_avgWatchTime_sec:         group.avgWatchTime || 0,
+    gof_avgCostPerView_kc:        (group.avgCostPerView || 0) * 0.01,
+    gof_viewership_q1:            group.viewershipFirstQuartile || 0,
+    gof_viewership_q2:            group.viewershipMidpoint      || 0,
+    gof_viewership_q3:            group.viewershipThirdQuartile || 0,
+    gof_viewership_complete:      group.viewershipComplete      || 0,
+    gof_viewershipRate_q1:        group.viewershipRateFirstQuartile || 0,
+    gof_viewershipRate_q2:        group.viewershipRateMidpoint      || 0,
+    gof_viewershipRate_q3:        group.viewershipRateThirdQuartile || 0,
+    gof_viewershipRate_complete:  group.viewershipRateComplete      || 0,
     gof_convName:            '',
     gof_semEventName:        '',
     gof_conversions:         0,
@@ -174,6 +206,7 @@ function expandGroupConversions(group) {
     gof_conversionRatio:     group.clicks > 0 ? totalConversions / group.clicks : 0,
     gof_pno:                 totalConversionValue > 0 ? (group.totalMoney || 0) / totalConversionValue * 100 : 0
   };
+  for (var mk in meta) { summaryRow[mk] = meta[mk]; }
   for (var evt in SEM_EVENT_MAP) {
     var sfx = SEM_EVENT_MAP[evt];
     summaryRow['gof_conv_'        + sfx]        = byEventCount[sfx] || 0;
@@ -184,20 +217,6 @@ function expandGroupConversions(group) {
 
   convList.forEach(function(conv) {
     var convRow = {
-      gof_campaignId:          campaignId,
-      gof_groupId:             group.id,
-      gof_groupName:           group.name || '',
-      gof_groupStatus:         group.status || '',
-      gof_groupIsDeleted:      group.isDeleted ? 'true' : 'false',
-      gof_impressionShare:          0,
-      gof_winRate:                  0,
-      gof_missedPrice:              0,
-      gof_exhaustedBudgetCount:     0,
-      gof_exhaustedBudgetShare:     0,
-      gof_stoppedByScheduleCount:   0,
-      gof_stoppedByScheduleShare:   0,
-      gof_underForestThresholdCount: 0,
-      gof_underForestThresholdShare: 0,
       gof_impressions:         0,
       gof_clicks:              0,
       gof_ctr:                 0,
@@ -206,6 +225,32 @@ function expandGroupConversions(group) {
       gof_avgPosition:         0,
       gof_impressionMoney_kc:  0,
       gof_avgCpt_kc:           0,
+      gof_clickMoney_kc:       0,
+      gof_impressionShare:          0,
+      gof_winRate:                  0,
+      gof_missedPrice_kc:           0,
+      gof_exhaustedBudgetCount:     0,
+      gof_exhaustedBudgetShare:     0,
+      gof_stoppedByScheduleCount:   0,
+      gof_stoppedByScheduleShare:   0,
+      gof_underForestThresholdCount: 0,
+      gof_underForestThresholdShare: 0,
+      gof_skips:                    0,
+      gof_views:                    0,
+      gof_engagement:               0,
+      gof_watchTime_sec:            0,
+      gof_viewRate:                 0,
+      gof_skipRate:                 0,
+      gof_avgWatchTime_sec:         0,
+      gof_avgCostPerView_kc:        0,
+      gof_viewership_q1:            0,
+      gof_viewership_q2:            0,
+      gof_viewership_q3:            0,
+      gof_viewership_complete:      0,
+      gof_viewershipRate_q1:        0,
+      gof_viewershipRate_q2:        0,
+      gof_viewershipRate_q3:        0,
+      gof_viewershipRate_complete:  0,
       gof_convName:            conv.name            || '',
       gof_semEventName:        conv.semEventName    || '',
       gof_conversions:         conv.conversions     || 0,
@@ -214,6 +259,7 @@ function expandGroupConversions(group) {
       gof_conversionRatio:     0,
       gof_pno:                 0
     };
+    for (var mk in meta) { convRow[mk] = meta[mk]; }
     for (var evt in SEM_EVENT_MAP) {
       var sfx = SEM_EVENT_MAP[evt];
       convRow['gof_conv_'        + sfx]        = 0;
