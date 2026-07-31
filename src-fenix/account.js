@@ -179,15 +179,15 @@ var AccFenixClass = function(rRoot) {
   this.getDataFromApi = function() {
     var user = new UserApi(this.Root.fenixToken, this.Root.userId, this.Root.Log);
 
-    var isDaily = this.Root.granularity === 'daily';
+    var isDaily = this.Root.displayColumns['account'].indexOf('date') !== -1;
     var daysCount = _dateDiff(this.Root.startDate, this.Root.endDate);
 
     // Denní rozpad — validace rozsahu
-    if (isDaily && daysCount > 30) {
+    if (isDaily && daysCount > 31) {
       DataStudioApp.createCommunityConnector()
         .newUserError()
-        .setText('Denní rozpad účtu je dostupný pouze pro období do 30 dní. Zkraťte rozsah dat nebo odeberte dimenzi "Účet: Datum".')
-        .setDebugText('acc_ daily granularity requested with ' + daysCount + ' days (max 30) — startDate=' + this.Root.startDate + ' endDate=' + this.Root.endDate)
+        .setText('Denní rozpad účtu je dostupný pouze pro období do 31 dní. Zkraťte rozsah dat nebo odeberte dimenzi "Účet: Datum".')
+        .setDebugText('acc_ daily granularity requested with ' + daysCount + ' days (max 31) — startDate=' + this.Root.startDate + ' endDate=' + this.Root.endDate)
         .throwException();
       return [];
     }

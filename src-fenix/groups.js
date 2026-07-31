@@ -33,9 +33,11 @@ var GROUP_ATTRS = [
  * @param {string}   dateTo
  * @param {number[]} campaignIds  required
  * @param {number[]} groupIds     optional post-fetch filter
+ * @param {boolean}  ignoreDeleted
+ * @param {string[]} [attrsOverride]  if provided, overrides GROUP_ATTRS (e.g. ['id'] for ads use-case)
  * @return {Array} flat list of group items, each with ._campaignId injected
  */
-function fetchGroups(userApi, dateFrom, dateTo, campaignIds, groupIds, ignoreDeleted) {
+function fetchGroups(userApi, dateFrom, dateTo, campaignIds, groupIds, ignoreDeleted, attrsOverride) {
   if (!campaignIds || campaignIds.length === 0) {
     userApi.Log.addRecord('Fenix skupiny: nejsou zadána ID kampaní.', true, 'fetchGroups');
     return [];
@@ -45,8 +47,10 @@ function fetchGroups(userApi, dateFrom, dateTo, campaignIds, groupIds, ignoreDel
   var token = userApi.getAccessToken();
   var Log = userApi.Log;
 
-  // Build shared query string for all group requests
-  var qp = { 'statisticsDateFrom': dateFrom, 'statisticsDateTo': dateTo, 'a': GROUP_ATTRS };
+  var attrs = attrsOverride || GROUP_ATTRS;
+  var qp = attrs === GROUP_ATTRS
+    ? { 'statisticsDateFrom': dateFrom, 'statisticsDateTo': dateTo, 'a': attrs }
+    : { 'a': attrs };
   if (ignoreDeleted) { qp['isDeleted'] = 'false'; }
   var qParts = [];
   for (var key in qp) {

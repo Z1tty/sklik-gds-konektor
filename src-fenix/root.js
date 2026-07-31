@@ -44,7 +44,7 @@ var Root = function (rConfigParams, sklikDataSchema, rFields, rDateRange) {
     'ads': [],
     'account': []
   };
-  this.types = { 'cgf': 'campaigns', 'gof': 'groups', /* 'cvf': 'conversions', */ 'adf': 'ads', 'acc': 'account' };
+  this.types = { 'cgf': 'campaigns', 'gof': 'groups', /* 'cvf': 'conversions', */ /* 'adf': 'ads', */ 'acc': 'account' };
 
   this.periods = ['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Yearly'];
 
@@ -201,8 +201,9 @@ var Root = function (rConfigParams, sklikDataSchema, rFields, rDateRange) {
     // cvf (conversions) entity hidden — uncomment to re-enable
     // } else if (this.displayColumns['conversions'].length > 0) {
     //   selectedEntity = 'conversions';
-    } else if (this.displayColumns['ads'].length > 0) {
-      selectedEntity = 'ads';
+    // adf (ads) entity hidden — 3-level nested API calls too slow for GDS timeout
+    // } else if (this.displayColumns['ads'].length > 0) {
+    //   selectedEntity = 'ads';
     } else if (this.displayColumns['account'].length > 0) {
       selectedEntity = 'account';
     } else {
@@ -219,8 +220,8 @@ var Root = function (rConfigParams, sklikDataSchema, rFields, rDateRange) {
       instance = new GroupsFenixClass(this);
     // } else if (selectedEntity === 'conversions') {
     //   instance = new ConversionsFenixClass(this);
-    } else if (selectedEntity === 'ads') {
-      instance = new AdsFenixClass(this);
+    // } else if (selectedEntity === 'ads') {
+    //   instance = new AdsFenixClass(this);
     } else {
       instance = new AccFenixClass(this);
     }
