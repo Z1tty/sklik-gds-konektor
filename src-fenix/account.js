@@ -4,12 +4,44 @@ Copyright (C) 2026 Seznam.cz, a.s.
 Author: Josef Matoušek
 */
 
+// --- Lokální datum helpery (YYYY-MM-DD / YYYYMMDD) ---
+
+// 'YYYY-MM-DD' + n dní → 'YYYY-MM-DD' (UTC, bez timezone posunů)
+function _addDays(dateStr, n) {
+  var parts = String(dateStr).split('-');
+  var d = new Date(Date.UTC(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10)));
+  d.setUTCDate(d.getUTCDate() + n);
+  var y = d.getUTCFullYear();
+  var m = d.getUTCMonth() + 1;
+  var day = d.getUTCDate();
+  return y + '-' + (m < 10 ? '0' + m : m) + '-' + (day < 10 ? '0' + day : day);
+}
+
+// Počet dní mezi 'YYYY-MM-DD' a 'YYYY-MM-DD' (inclusive: from=to → 1)
+function _dateDiff(from, to) {
+  var pf = String(from).split('-');
+  var pt = String(to).split('-');
+  var df = Date.UTC(parseInt(pf[0], 10), parseInt(pf[1], 10) - 1, parseInt(pf[2], 10));
+  var dt = Date.UTC(parseInt(pt[0], 10), parseInt(pt[1], 10) - 1, parseInt(pt[2], 10));
+  var msPerDay = 86400000;
+  return Math.round((dt - df) / msPerDay) + 1;
+}
+
+// 'YYYY-MM-DD' → 'YYYYMMDD' (GDS YEAR_MONTH_DAY formát)
+function _toGdsDate(dateStr) {
+  return String(dateStr).replace(/-/g, '');
+}
+
 /**
  * GDS entity class for Fenix account-level aggregate.
  *
  * Fenix API zatím nemá /sklik/account/stats/ endpoint, takže interně voláme
  * fetchCampaigns() (bez filtrů) a agregujeme všechny kampaně do JEDNOHO řádku
  * reprezentujícího celý účet za dané období.
+ *
+ * Denní rozpad: pokud uživatel přidá dimenzi 'daily' a rozsah dat <= 30 dní,
+ * voláme fetchCampaigns() pro každý den a vrátíme N řádků (jeden na den)
+ * s vyplněným polem acc_date. Jinak vrátíme 1 řádek s acc_date = ''.
  *
  * Až Fenix endpoint dodá, stačí vyměnit vnitřní logiku getDataFromApi() —
  * schéma i convertDataToGDS() zůstane beze změny.
@@ -19,18 +51,13 @@ Author: Josef Matoušek
 var AccFenixClass = function(rRoot) {
   this.Root = rRoot;
 
-  this.getDataFromApi = function() {
-    var user = new UserApi(this.Root.fenixToken, this.Root.userId, this.Root.Log);
-
-    // Vždy načítáme VŠECHNY kampaně účtu (bez id/type filtrů) — accountový agregát.
-    var campaigns = fetchCampaigns(user, this.Root.startDate, this.Root.endDate, [], [], this.Root.ignoreDeleted);
-
-    if (!campaigns || campaigns.length === 0) {
-      this.Root.Log.addRecord('Fenix účet: API vrátilo prázdný výsledek', true, 'AccFenixClass.getDataFromApi');
-      return [];
-    }
-
-    // Agregační akumulátory
+  /**
+   * Agregace pole kampaní z jednoho volání fetchCampaigns() do jednoho řádku.
+   * @param {Array} campaigns  raw items z fetchCampaigns()
+   * @param {string} dateStr   'YYYYMMDD' pro denní řádek, nebo '' pro celé období
+   * @return {Object} jeden GDS řádek
+   */
+  this.aggregateCampaigns = function(campaigns, dateStr) {
     var acc = {
       impressions: 0,
       clicks: 0,
@@ -56,7 +83,7 @@ var AccFenixClass = function(rRoot) {
       vid_avgPosImpr: 0
     };
 
-    campaigns.forEach(function(c) {
+    (campaigns || []).forEach(function(c) {
       var impr = c.impressions || 0;
       acc.impressions      += impr;
       acc.clicks           += c.clicks     || 0;
@@ -113,7 +140,9 @@ var AccFenixClass = function(rRoot) {
     var totalMoneyKc      = acc.totalMoney * 0.01;
     var conversionValueKc = acc.conversionValue * 0.01;
 
-    var row = {
+    return {
+      acc_date:               dateStr || '',
+
       acc_impressions:        acc.impressions,
       acc_clicks:             acc.clicks,
       acc_ctr:                acc.impressions > 0 ? acc.clicks / acc.impressions : 0,
@@ -145,9 +174,52 @@ var AccFenixClass = function(rRoot) {
       acc_vid_totalMoney_kc:  acc.vid_totalMoney * 0.01,
       acc_vid_avgPosition:    acc.vid_avgPosImpr > 0 ? acc.vid_avgPosWeighted / acc.vid_avgPosImpr : 0
     };
+  };
 
+  this.getDataFromApi = function() {
+    var user = new UserApi(this.Root.fenixToken, this.Root.userId, this.Root.Log);
+
+    var isDaily = this.Root.granularity === 'daily';
+    var daysCount = _dateDiff(this.Root.startDate, this.Root.endDate);
+
+    // Denní rozpad — validace rozsahu
+    if (isDaily && daysCount > 30) {
+      DataStudioApp.createCommunityConnector()
+        .newUserError()
+        .setText('Denní rozpad účtu je dostupný pouze pro období do 30 dní. Zkraťte rozsah dat nebo odeberte dimenzi "Účet: Datum".')
+        .setDebugText('acc_ daily granularity requested with ' + daysCount + ' days (max 30) — startDate=' + this.Root.startDate + ' endDate=' + this.Root.endDate)
+        .throwException();
+      return [];
+    }
+
+    // Denní loop: pro každý den zavolej fetchCampaigns a agreguj
+    if (isDaily) {
+      var rows = [];
+      for (var i = 0; i < daysCount; i++) {
+        var dayStr = _addDays(this.Root.startDate, i);
+        // Rate limiting mezi dny (stejně jako fetchAll mezi stránkami)
+        if (i > 0) { Utilities.sleep(250); }
+
+        var dayCampaigns = fetchCampaigns(user, dayStr, dayStr, [], [], this.Root.ignoreDeleted);
+        // Pro dny s 0 kampaněmi (svátek, nová kampaň) přidáme řádek s nulovými metrikami.
+        var row = this.aggregateCampaigns(dayCampaigns || [], _toGdsDate(dayStr));
+        rows.push(row);
+      }
+      this.Root.Log.addRecord('Fenix účet: denní rozpad ' + rows.length + ' dní (' + this.Root.startDate + ' → ' + this.Root.endDate + ')', true, 'AccFenixClass.getDataFromApi');
+      return rows;
+    }
+
+    // Výchozí chování — jeden řádek za celé období
+    var campaigns = fetchCampaigns(user, this.Root.startDate, this.Root.endDate, [], [], this.Root.ignoreDeleted);
+
+    if (!campaigns || campaigns.length === 0) {
+      this.Root.Log.addRecord('Fenix účet: API vrátilo prázdný výsledek', true, 'AccFenixClass.getDataFromApi');
+      return [];
+    }
+
+    var singleRow = this.aggregateCampaigns(campaigns, '');
     this.Root.Log.addRecord('Fenix účet: agregováno ' + campaigns.length + ' kampaní do 1 řádku', true, 'AccFenixClass.getDataFromApi');
-    return [row];
+    return [singleRow];
   };
 
   this.convertDataToGDS = function(rows) {

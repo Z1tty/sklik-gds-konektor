@@ -1815,12 +1815,28 @@ var Schema = function (config) {
     /*
     * ######################################################
     * ############ SCHEMA PRO FENIX — ÚČET (acc) ###########
-    * Agregát celého Sklik účtu za dané období — VŽDY 1 řádek.
+    * Agregát celého Sklik účtu za dané období — standardně 1 řádek.
     * Zatím počítáno sumarizací všech kampaní přes fetchCampaigns().
     * Až Fenix dodá /sklik/account/stats/, vymění se vnitřní logika
     * v AccFenixClass.getDataFromApi() beze změny schématu.
+    *
+    * Volitelný denní rozpad: pokud uživatel přidá dimenzi 'daily' a
+    * rozsah dat je <= 30 dní, vrací se N řádků (jeden na den) s vyplněným
+    * polem acc_date. Jinak acc_date = ''.
     * ######################################################
     */
+    {
+      name: 'acc_date',
+      label: 'Účet: Datum',
+      description: 'Datum ve formátu YYYYMMDD. Vyplněno pouze při denním rozpadu (max 30 dní).',
+      dataType: 'STRING',
+      group: 'account',
+      semantics: {
+        conceptType: 'DIMENSION',
+        semanticType: 'YEAR_MONTH_DAY',
+        semanticGroup: 'DATETIME'
+      }
+    },
     {
       name: 'acc_impressions',
       label: 'Účet: Zobrazení',

@@ -225,7 +225,9 @@ var Root = function (rConfigParams, sklikDataSchema, rFields, rDateRange) {
       instance = new AccFenixClass(this);
     }
 
-    if (this.granularity !== 'total') {
+    // Account entity řeší denní granularitu sama v getDataFromApi() (loopování přes dny).
+    // Ostatní entity nemají podporu granularity — hodíme UserError.
+    if (this.granularity !== 'total' && selectedEntity !== 'account') {
       DataStudioApp.createCommunityConnector()
         .newUserError()
         .setText('Časová granularita (Po dnech / Po týdnech / …) není Fenix API podporována. Odeberte dimenzi granularity z reportu a použijte pouze agregovaná data.')
