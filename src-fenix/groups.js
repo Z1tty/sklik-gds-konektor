@@ -204,7 +204,7 @@ function expandGroupConversions(group) {
     gof_conversionValue_kc:  0,
     gof_conversionPrice_kc:  totalConversions > 0 ? (group.totalMoney || 0) * 0.01 / totalConversions : 0,
     gof_conversionRatio:     group.clicks > 0 ? totalConversions / group.clicks : 0,
-    gof_pno:                 totalConversionValue > 0 ? (group.totalMoney || 0) / totalConversionValue * 100 : 0
+    gof_pno:                 totalConversionValue > 0 ? (group.totalMoney || 0) / totalConversionValue : 0
   };
   for (var mk in meta) { summaryRow[mk] = meta[mk]; }
   for (var evt in SEM_EVENT_MAP) {

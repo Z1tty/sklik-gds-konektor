@@ -142,7 +142,7 @@ function expandCampaignConversions(campaign) {
     cgf_conversionValue_kc:  0,
     cgf_conversionPrice_kc:  totalConversions > 0 ? (campaign.totalMoney || 0) * 0.01 / totalConversions : 0,
     cgf_conversionRatio:     campaign.clicks > 0 ? totalConversions / campaign.clicks : 0,
-    cgf_pno:                 totalConversionValue > 0 ? (campaign.totalMoney || 0) / totalConversionValue * 100 : 0
+    cgf_pno:                 totalConversionValue > 0 ? (campaign.totalMoney || 0) / totalConversionValue : 0
   };
   for (var mk in meta) { summaryRow[mk] = meta[mk]; }
   for (var evt in SEM_EVENT_MAP) {

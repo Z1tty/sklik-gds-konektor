@@ -342,18 +342,18 @@ var Schema = function (config) {
     {
       name: 'cgf_conversionRatio',
       label: 'Kampaň: Konverzní poměr',
-      description: 'Podíl konverzí na proklikech = konverze / prokliky. Vyplněno pouze na souhrnném řádku.',
+      description: 'Podíl konverzí na proklikech = konverze / prokliky (%). Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
-      semantics: { conceptType: 'METRIC', defaultAggregationType: 'NO_AGGREGATION' }
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
     },
     {
       name: 'cgf_pno',
       label: 'Kampaň: PNO (náklady/hodnota)',
-      description: 'Podíl nákladů na obratu = celková cena / hodnota konverzí × 100. Vyplněno pouze na souhrnném řádku.',
+      description: 'Podíl nákladů na obratu = celková cena / hodnota konverzí (%). Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'campaigns',
-      semantics: { conceptType: 'METRIC', defaultAggregationType: 'NO_AGGREGATION' }
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
     },
     {
       name: 'cgf_impressions',
@@ -1069,18 +1069,18 @@ var Schema = function (config) {
     {
       name: 'gof_conversionRatio',
       label: 'Sestava: Konverzní poměr',
-      description: 'Podíl konverzí na proklikech = konverze / prokliky. Vyplněno pouze na souhrnném řádku.',
+      description: 'Podíl konverzí na proklikech = konverze / prokliky (%). Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
-      semantics: { conceptType: 'METRIC', defaultAggregationType: 'NO_AGGREGATION' }
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
     },
     {
       name: 'gof_pno',
       label: 'Sestava: PNO (náklady/hodnota)',
-      description: 'Podíl nákladů na obratu = celková cena / hodnota konverzí × 100. Vyplněno pouze na souhrnném řádku.',
+      description: 'Podíl nákladů na obratu = celková cena / hodnota konverzí (%). Vyplněno pouze na souhrnném řádku.',
       dataType: 'NUMBER',
       group: 'groups',
-      semantics: { conceptType: 'METRIC', defaultAggregationType: 'NO_AGGREGATION' }
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
     },
     {
       name: 'gof_impressions',
@@ -1598,18 +1598,18 @@ var Schema = function (config) {
     {
       name: 'adf_conversionRatio',
       label: 'Inzerát: Konverzní poměr',
-      description: 'Podíl konverzí na proklikech = konverze / prokliky.',
+      description: 'Podíl konverzí na proklikech = konverze / prokliky (%).',
       dataType: 'NUMBER',
       group: 'ads',
-      semantics: { conceptType: 'METRIC', defaultAggregationType: 'AVG' }
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
     },
     {
       name: 'adf_pno',
       label: 'Inzerát: PNO (náklady/hodnota)',
-      description: 'Podíl nákladů na obratu = náklady / hodnota konverzí × 100.',
+      description: 'Podíl nákladů na obratu = náklady / hodnota konverzí (%).',
       dataType: 'NUMBER',
       group: 'ads',
-      semantics: { conceptType: 'METRIC', defaultAggregationType: 'AVG' }
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
     },
     {
       name: 'adf_clickMoney_kc',
