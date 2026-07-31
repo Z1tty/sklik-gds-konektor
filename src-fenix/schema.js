@@ -1389,13 +1389,13 @@ var Schema = function (config) {
     },
     cvf_END */
 
-    /*
+    /* adf_START — ads entita schována (3 vrstvené API volání příliš pomalé)
     * ######################################################
     * ########### SCHEMA PRO FENIX — INZERÁTY (adf) ########
     * Jeden řádek na inzerát — bez hybridního modelu.
     * ######################################################
     */
-    {
+    /*{
       name: 'adf_campaignId',
       label: 'Inzerát: ID kampaně',
       description: 'ID nadřazené kampaně.',
@@ -1811,6 +1811,7 @@ var Schema = function (config) {
       group: 'ads',
       semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
     },
+    adf_END */
 
     /*
     * ######################################################
