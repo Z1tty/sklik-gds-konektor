@@ -41,9 +41,10 @@ var Root = function (rConfigParams, sklikDataSchema, rFields, rDateRange) {
     'campaigns': [],
     'groups': [],
     'conversions': [],
-    'ads': []
+    'ads': [],
+    'account': []
   };
-  this.types = { 'cgf': 'campaigns', 'gof': 'groups', /* 'cvf': 'conversions', */ 'adf': 'ads' };
+  this.types = { 'cgf': 'campaigns', 'gof': 'groups', /* 'cvf': 'conversions', */ 'adf': 'ads', 'acc': 'account' };
 
   this.periods = ['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Yearly'];
 
@@ -202,6 +203,8 @@ var Root = function (rConfigParams, sklikDataSchema, rFields, rDateRange) {
     //   selectedEntity = 'conversions';
     } else if (this.displayColumns['ads'].length > 0) {
       selectedEntity = 'ads';
+    } else if (this.displayColumns['account'].length > 0) {
+      selectedEntity = 'account';
     } else {
       this.Log.addHeader('Žádná Fenix pole nebyla vybrána', 2, 'negative');
       return false;
@@ -216,8 +219,10 @@ var Root = function (rConfigParams, sklikDataSchema, rFields, rDateRange) {
       instance = new GroupsFenixClass(this);
     // } else if (selectedEntity === 'conversions') {
     //   instance = new ConversionsFenixClass(this);
-    } else {
+    } else if (selectedEntity === 'ads') {
       instance = new AdsFenixClass(this);
+    } else {
+      instance = new AccFenixClass(this);
     }
 
     if (this.granularity !== 'total') {

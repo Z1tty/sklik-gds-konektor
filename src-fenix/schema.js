@@ -1810,6 +1810,206 @@ var Schema = function (config) {
       dataType: 'NUMBER',
       group: 'ads',
       semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+
+    /*
+    * ######################################################
+    * ############ SCHEMA PRO FENIX — ÚČET (acc) ###########
+    * Agregát celého Sklik účtu za dané období — VŽDY 1 řádek.
+    * Zatím počítáno sumarizací všech kampaní přes fetchCampaigns().
+    * Až Fenix dodá /sklik/account/stats/, vymění se vnitřní logika
+    * v AccFenixClass.getDataFromApi() beze změny schématu.
+    * ######################################################
+    */
+    {
+      name: 'acc_impressions',
+      label: 'Účet: Zobrazení',
+      description: 'Celkový počet zobrazení reklam napříč celým účtem za zvolené období.',
+      dataType: 'NUMBER',
+      group: 'account',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'acc_clicks',
+      label: 'Účet: Prokliky',
+      description: 'Celkový počet prokliků napříč celým účtem za zvolené období.',
+      dataType: 'NUMBER',
+      group: 'account',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'acc_ctr',
+      label: 'Účet: CTR',
+      description: 'Míra prokliku za celý účet = prokliky / zobrazení (%).',
+      dataType: 'NUMBER',
+      group: 'account',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'acc_totalMoney_kc',
+      label: 'Účet: Celková cena (Kč)',
+      description: 'Celkové náklady celého účtu za zvolené období v Kč.',
+      dataType: 'NUMBER',
+      group: 'account',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
+    },
+    {
+      name: 'acc_avgCpc_kc',
+      label: 'Účet: Průměrná CPC (Kč)',
+      description: 'Průměrná cena za proklik za celý účet v Kč (totalMoney / clicks).',
+      dataType: 'NUMBER',
+      group: 'account',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'acc_avgPosition',
+      label: 'Účet: Průměrná pozice',
+      description: 'Průměrná pozice reklamy za celý účet (vážený průměr podle zobrazení).',
+      dataType: 'NUMBER',
+      group: 'account',
+      semantics: { conceptType: 'METRIC', defaultAggregationType: 'AVG' }
+    },
+    {
+      name: 'acc_conversions',
+      label: 'Účet: Konverze',
+      description: 'Celkový počet konverzí napříč celým účtem (součet přes všechny kampaně a všechny konverzní definice).',
+      dataType: 'NUMBER',
+      group: 'account',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'acc_conversionValue_kc',
+      label: 'Účet: Hodnota konverzí (Kč)',
+      description: 'Celková hodnota konverzí napříč celým účtem v Kč.',
+      dataType: 'NUMBER',
+      group: 'account',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
+    },
+    {
+      name: 'acc_conversionPrice_kc',
+      label: 'Účet: Cena konverze (Kč)',
+      description: 'Průměrná cena za jednu konverzi za celý účet = totalMoney / conversions (Kč).',
+      dataType: 'NUMBER',
+      group: 'account',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY', defaultAggregationType: 'NO_AGGREGATION' }
+    },
+    {
+      name: 'acc_conversionRatio',
+      label: 'Účet: Konverzní poměr',
+      description: 'Podíl konverzí na proklikách za celý účet = conversions / clicks (%).',
+      dataType: 'NUMBER',
+      group: 'account',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'NO_AGGREGATION' }
+    },
+    {
+      name: 'acc_pno',
+      label: 'Účet: PNO (náklady/hodnota)',
+      description: 'Podíl nákladů na obratu za celý účet = totalMoney / conversionValue × 100 (%).',
+      dataType: 'NUMBER',
+      group: 'account',
+      semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'NO_AGGREGATION' }
+    },
+
+    /* --- Účet: síť FULLTEXT --- */
+    {
+      name: 'acc_ft_impressions',
+      label: 'Účet: Fulltext zobrazení',
+      description: 'Počet zobrazení ve fulltextové síti napříč celým účtem.',
+      dataType: 'NUMBER',
+      group: 'account',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'acc_ft_clicks',
+      label: 'Účet: Fulltext prokliky',
+      description: 'Počet prokliků ve fulltextové síti napříč celým účtem.',
+      dataType: 'NUMBER',
+      group: 'account',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'acc_ft_totalMoney_kc',
+      label: 'Účet: Fulltext cena (Kč)',
+      description: 'Náklady ve fulltextové síti napříč celým účtem v Kč.',
+      dataType: 'NUMBER',
+      group: 'account',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
+    },
+    {
+      name: 'acc_ft_avgPosition',
+      label: 'Účet: Fulltext průměrná pozice',
+      description: 'Vážený průměr pozice ve fulltextové síti napříč celým účtem (podle zobrazení).',
+      dataType: 'NUMBER',
+      group: 'account',
+      semantics: { conceptType: 'METRIC', defaultAggregationType: 'AVG' }
+    },
+
+    /* --- Účet: síť CONTEXT (obsahová) --- */
+    {
+      name: 'acc_ctx_impressions',
+      label: 'Účet: Obsah zobrazení',
+      description: 'Počet zobrazení v obsahové síti napříč celým účtem.',
+      dataType: 'NUMBER',
+      group: 'account',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'acc_ctx_clicks',
+      label: 'Účet: Obsah prokliky',
+      description: 'Počet prokliků v obsahové síti napříč celým účtem.',
+      dataType: 'NUMBER',
+      group: 'account',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'acc_ctx_totalMoney_kc',
+      label: 'Účet: Obsah cena (Kč)',
+      description: 'Náklady v obsahové síti napříč celým účtem v Kč.',
+      dataType: 'NUMBER',
+      group: 'account',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
+    },
+    {
+      name: 'acc_ctx_avgPosition',
+      label: 'Účet: Obsah průměrná pozice',
+      description: 'Vážený průměr pozice v obsahové síti napříč celým účtem (podle zobrazení).',
+      dataType: 'NUMBER',
+      group: 'account',
+      semantics: { conceptType: 'METRIC', defaultAggregationType: 'AVG' }
+    },
+
+    /* --- Účet: síť VIDEO --- */
+    {
+      name: 'acc_vid_impressions',
+      label: 'Účet: Video zobrazení',
+      description: 'Počet zobrazení ve video síti napříč celým účtem.',
+      dataType: 'NUMBER',
+      group: 'account',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'acc_vid_clicks',
+      label: 'Účet: Video prokliky',
+      description: 'Počet prokliků ve video síti napříč celým účtem.',
+      dataType: 'NUMBER',
+      group: 'account',
+      semantics: { conceptType: 'METRIC' }
+    },
+    {
+      name: 'acc_vid_totalMoney_kc',
+      label: 'Účet: Video cena (Kč)',
+      description: 'Náklady ve video síti napříč celým účtem v Kč.',
+      dataType: 'NUMBER',
+      group: 'account',
+      semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' }
+    },
+    {
+      name: 'acc_vid_avgPosition',
+      label: 'Účet: Video průměrná pozice',
+      description: 'Vážený průměr pozice ve video síti napříč celým účtem (podle zobrazení).',
+      dataType: 'NUMBER',
+      group: 'account',
+      semantics: { conceptType: 'METRIC', defaultAggregationType: 'AVG' }
     }
   ];
 
