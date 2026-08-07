@@ -53,7 +53,7 @@ function _monthLastDay(curY, curM) {
  *
  * Dimenze ovlivňují počet vrácených řádků:
  *   Bez dimenzí:              1 řádek (celé období)
- *   Účet: Datum (acc_date):   1 řádek / den (max 31 dní)
+ *   Účet: Den (acc_date):     1 řádek / den (max 31 dní)
  *   Účet: Měsíc (acc_month):  1 řádek / měsíc (max 24 měsíců)
  *   Účet: Síť (acc_network):  3 řádky / období (Fulltext / Obsahová / Video)
  *   Kombinace datum+síť nebo měsíc+síť je podporována (3× více řádků).

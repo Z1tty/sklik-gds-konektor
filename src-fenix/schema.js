@@ -1840,7 +1840,7 @@ var Schema = function (config) {
     */
     {
       name: 'acc_date',
-      label: 'Účet: Datum',
+      label: 'Účet: Den',
       description: 'Datum ve formátu YYYYMMDD. Vyplněno pouze při denním rozpadu (max 31 dní).',
       dataType: 'STRING',
       group: 'account',
