@@ -1841,7 +1841,7 @@ var Schema = function (config) {
     {
       name: 'acc_date',
       label: 'Účet: Datum',
-      description: 'Datum ve formátu YYYYMMDD. Vyplněno pouze při denním rozpadu (max 30 dní).',
+      description: 'Datum ve formátu YYYYMMDD. Vyplněno pouze při denním rozpadu (max 31 dní).',
       dataType: 'STRING',
       group: 'account',
       semantics: {
@@ -1849,6 +1849,26 @@ var Schema = function (config) {
         semanticType: 'YEAR_MONTH_DAY',
         semanticGroup: 'DATETIME'
       }
+    },
+    {
+      name: 'acc_month',
+      label: 'Účet: Měsíc',
+      description: 'Měsíc ve formátu YYYYMM. Vyplněno pouze při měsíčním rozpadu (max 24 měsíců).',
+      dataType: 'STRING',
+      group: 'account',
+      semantics: {
+        conceptType: 'DIMENSION',
+        semanticType: 'YEAR_MONTH',
+        semanticGroup: 'DATETIME'
+      }
+    },
+    {
+      name: 'acc_network',
+      label: 'Účet: Síť',
+      description: 'Síť (Fulltext / Obsahová / Video). Přidejte pro zobrazení koláčového grafu rozpadu sítí.',
+      dataType: 'STRING',
+      group: 'account',
+      semantics: { conceptType: 'DIMENSION' }
     },
     {
       name: 'acc_impressions',
