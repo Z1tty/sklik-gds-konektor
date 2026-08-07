@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<title>Sklik GDS Connector v7 Fenix — Pokyny pro testery</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  :root {
+    --red: #CC1720;
+    --dark: #1a1a2e;
+    --grey: #6b7280;
+    --grey-light: #f4f5f7;
+    --border: #e5e7eb;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', Arial, sans-serif; background: #e8e8e8; color: #111827; font-size: 10pt; }
+
+  /* ── Cover page ── */
+  .cover {
+    width: 29.7cm; height: 21cm;
+    background: #0f1923;
+    margin: 0 auto 1cm;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    page-break-after: always;
+  }
+  .cover-left {
+    width: 58%;
+    background: var(--red);
+    padding: 2cm 1.5cm 1.5cm 1.5cm;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2;
+  }
+  .cover-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5cm;
+  }
+  .cover-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    font-size: 8pt;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 3px;
+    margin-bottom: 1.2cm;
+    width: fit-content;
+  }
+  .cover-title {
+    font-size: 28pt;
+    font-weight: 800;
+    color: white;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5cm;
+  }
+  .cover-subtitle {
+    font-size: 13pt;
+    font-weight: 400;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.4;
+  }
+  .cover-footer {
+    font-size: 8.5pt;
+    color: rgba(255,255,255,0.5);
+    margin-top: 1.5cm;
+  }
+  .cover-logo-area {
+    text-align: center;
+  }
+  .cover-logo-text {
+    font-size: 36pt;
+    font-weight: 800;
+    color: rgba(255,255,255,0.12);
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .cover-version {
+    font-size: 9pt;
+    font-weight: 600;
+    color: rgba(255,255,255,0.35);
+    text-align: center;
+    margin-top: 0.5cm;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Content pages ── */
+  .page {
+    width: 29.7cm;
+    height: 21cm;
+    padding: 1.1cm 1.5cm 1.3cm;
+    margin: 0 auto 1cm;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    page-break-after: always;
+  }
+  .page::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--red);
+  }
+  .page::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--red);
+    opacity: 0.35;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    font-size: 20pt;
+    font-weight: 800;
+    color: var(--dark);
+    margin-bottom: 0.5cm;
+    padding-bottom: 0.25cm;
+    border-bottom: 2px solid var(--red);
+    letter-spacing: -0.02em;
+  }
+  h2 {
+    font-size: 13pt;
+    font-weight: 700;
+    color: var(--dark);
+    margin-top: 0.6cm;
+    margin-bottom: 0.25cm;
+  }
+  h3 {
+    font-size: 10.5pt;
+    font-weight: 600;
+    color: var(--red);
+    margin-top: 0.45cm;
+    margin-bottom: 0.15cm;
+  }
+  p { line-height: 1.55; margin-bottom: 0.3cm; color: #374151; }
+  ul, ol { padding-left: 1.2em; margin-bottom: 0.3cm; }
+  li { line-height: 1.6; color: #374151; margin-bottom: 0.1cm; }
+  strong { font-weight: 600; color: #111827; }
+  code {
+    font-family: 'Courier New', monospace;
+    background: var(--grey-light);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0.15em 0.4em;
+    font-size: 9pt;
+    word-break: break-all;
+  }
+  .url-block {
+    background: var(--grey-light);
+    border-left: 3px solid var(--red);
+    padding: 0.4cm 0.6cm;
+    margin: 0.3cm 0;
+    border-radius: 0 4px 4px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 8.5pt;
+    color: #1d4ed8;
+    word-break: break-all;
+    line-height: 1.5;
+  }
+  .warning-box {
+    background: #fff8f0;
+    border: 1px solid #fed7aa;
+    border-left: 4px solid #f97316;
+    border-radius: 4px;
+    padding: 0.35cm 0.6cm;
+    margin: 0.35cm 0;
+    font-size: 9.5pt;
+    line-height: 1.5;
+    color: #7c2d12;
+  }
+  .warning-box strong { color: #9a3412; }
+  .info-box {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-left: 4px solid #3b82f6;
+    border-radius: 4px;
+    padding: 0.35cm 0.6cm;
+    margin: 0.35cm 0;
+    font-size: 9.5pt;
+    line-height: 1.5;
+    color: #1e3a8a;
+  }
+
+  /* ── Table ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.3cm 0;
+    font-size: 9.5pt;
+  }
+  th {
+    background: var(--dark);
+    color: white;
+    font-weight: 600;
+    padding: 0.25cm 0.4cm;
+    text-align: left;
+    font-size: 9pt;
+  }
+  td {
+    padding: 0.2cm 0.4cm;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.45;
+  }
+  tr:nth-child(even) td { background: var(--grey-light); }
+  td:first-child { font-weight: 600; white-space: nowrap; }
+  td.center { font-size: 8.5pt; color: var(--grey); text-align: center; }
+  td.req { color: var(--red); font-weight: 700; font-size: 8.5pt; text-align: center; }
+  td.opt { color: var(--grey); font-size: 8.5pt; text-align: center; }
+
+  /* ── Entity cards ── */
+  .entity-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.4cm 0.6cm;
+    margin: 0.3cm 0;
+    position: relative;
+  }
+  .entity-card-label {
+    position: absolute;
+    top: -10px;
+    left: 0.5cm;
+    background: var(--red);
+    color: white;
+    font-size: 7.5pt;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .entity-card h3 {
+    margin-top: 0.1cm;
+    font-size: 11pt;
+    color: var(--dark);
+  }
+  .entity-card p { margin-bottom: 0.15cm; font-size: 9.5pt; }
+
+  /* ── Limitation list ── */
+  .limit-item {
+    display: flex;
+    gap: 0.4cm;
+    padding: 0.3cm 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .limit-item:last-child { border-bottom: none; }
+  .limit-icon {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    background: #fee2e2;
+    color: var(--red);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10pt;
+    font-weight: 700;
+    margin-top: 1px;
+  }
+  .limit-text { font-size: 9.5pt; line-height: 1.5; color: #374151; }
+  .limit-text strong { color: #111827; }
+
+  /* ── Page number / footer ── */
+  .page-footer {
+    margin-top: auto;
+    padding-top: 0.4cm;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 8pt;
+    color: var(--grey);
+    border-top: 1px solid var(--border);
+  }
+
+  @page { size: 29.7cm 21cm; margin: 0; }
+  @media print {
+    body { background: white; }
+    .cover, .page { margin: 0; page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     COVER PAGE
+══════════════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-left">
+    <div>
+      <div class="cover-badge">Testovací dokumentace</div>
+      <div class="cover-title">Sklik GDS<br>Connector<br>v7 Fenix</div>
+      <div class="cover-subtitle">Pokyny pro připojení,<br>konfiguraci a omezení konektoru</div>
+    </div>
+    <div class="cover-footer">
+      Seznam.cz, a.s. &nbsp;·&nbsp; srpen 2026 &nbsp;·&nbsp; Interní — pouze pro testery
+    </div>
+  </div>
+  <div class="cover-right">
+    <div>
+      <div class="cover-logo-text">Sklik</div>
+      <div class="cover-version">Fenix API · v7.0.27</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PAGE 1 — Připojení + Konfigurace
+══════════════════════════════════════════ -->
+<div class="page">
+  <h1>Připojení konektoru</h1>
+
+  <div class="warning-box">
+    <strong>Testovací verze.</strong> Konektor je dostupný na dočasné testovací URL. Po dokončení testování bude finální konektor publikován na nové adrese — bude potřeba datový zdroj v reportech <strong>přepojit</strong>.
+  </div>
+
+  <h2>Jak přidat konektor do Google Data Studia</h2>
+  <ol>
+    <li>Otevři Google Data Studio a klikni na <strong>Přidat data</strong></li>
+    <li>Vyhledej <em>Sklik GDS connector v7.0 Fenix</em>, nebo použij přímý odkaz níže:</li>
+    <li>Potvrď <strong>bezpečnostní výzvy</strong> Google — konektor pochází od třetí strany, postup je stejný jako u jiných GDS konektorů (viz nápověda Skliku)</li>
+  </ol>
+
+  <div class="url-block"><a href="https://datastudio.google.com/datasources/create?connectorId=AKfycbwNc68QuxLFWCtAGOdK7BnVRq_cIrRAi2f401XmGZ_VA5YZYEyLxonFUm6ZIINaFtejxA&authuser=0" style="color:#1d4ed8">https://datastudio.google.com/datasources/create?connectorId=AKfycbwNc68QuxLFWCtAGOdK7BnVRq_cIrRAi2f401XmGZ_VA5YZYEyLxonFUm6ZIINaFtejxA&authuser=0</a></div>
+
+  <div class="info-box">
+    Podrobný postup nastavení: <a href="https://napoveda.sklik.cz/pokrocila-prace-s-daty/google-data-studio/" style="color:#1d4ed8">napoveda.sklik.cz/pokrocila-prace-s-daty/google-data-studio/</a>
+  </div>
+
+  <h1 style="margin-top:0.6cm">Konfigurace</h1>
+  <p>Po přidání konektoru vyplň nastavení datového zdroje:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:28%">Pole</th>
+        <th style="width:8%; text-align:center">Povinné</th>
+        <th>Popis</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Fenix token</td>
+        <td class="req">Ano</td>
+        <td>Sklik → Nástroje → API přístup → Fenix token</td>
+      </tr>
+      <tr>
+        <td>UserId</td>
+        <td class="opt">Ne</td>
+        <td>ID účtu. <strong>Prázdné = konektor zjistí automaticky.</strong> Pro agenturní přepnutí zadej ID klientského účtu.</td>
+      </tr>
+      <tr>
+        <td>PremiseId</td>
+        <td class="opt">Ne</td>
+        <td>ID provozovny Zboží.cz — zatím nepodporováno, ponech prázdné.</td>
+      </tr>
+      <tr>
+        <td>Typy kampaní</td>
+        <td class="opt">Ne</td>
+        <td>Filtr na typy (vyhledávací, obsahová, video…). Prázdné = načte vše.</td>
+      </tr>
+      <tr>
+        <td>ID kampaní</td>
+        <td class="opt">Ne</td>
+        <td>Čárkou oddělená ID konkrétních kampaní. Prázdné = všechny kampaně.</td>
+      </tr>
+      <tr>
+        <td>ID sestav</td>
+        <td class="opt">Ne</td>
+        <td>Filtr na sestavy — vyžaduje vyplněná ID kampaní.</td>
+      </tr>
+      <tr>
+        <td>Ignorovat smazané</td>
+        <td class="opt">Ne</td>
+        <td>Zaškrtnuté = vyfiltruje smazané kampaně a sestavy z výsledků.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-footer">
+    <span>Sklik GDS Connector v7 Fenix — Testovací dokumentace</span>
+    <span>1 / 2</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PAGE 2 — Entity + Omezení + Hlášení
+══════════════════════════════════════════ -->
+<div class="page">
+  <h1>Dostupné přehledy</h1>
+
+  <p>Konektor rozpozná typ přehledu automaticky podle prefixu pole. Do jednoho grafu nebo tabulky <strong>nekombinuj pole z různých entit</strong>.</p>
+
+  <div class="entity-card">
+    <div class="entity-card-label">Kampaně</div>
+    <h3>Kampaň: …</h3>
+    <p>Statistiky za celé vybrané období na úrovni kampaně. Konverze jsou rozepsány po typech (Purchase, Lead, AddToCart…) — každý typ tvoří samostatný řádek. Pro součtový přehled filtruj na prázdný název konverze.</p>
+  </div>
+
+  <div class="entity-card">
+    <div class="entity-card-label">Sestavy</div>
+    <h3>Sestava: …</h3>
+    <p>Totéž na úrovni sestavy. Obsahuje navíc metriky viditelnosti: <strong>Impression Share, Win Rate, Missed Price</strong> a další ISH metriky.</p>
+  </div>
+
+  <div class="entity-card">
+    <div class="entity-card-label">Účet</div>
+    <h3>Účet: …</h3>
+    <p>Souhrnný pohled na celý účet — agregát všech kampaní. Chování závisí na přidané dimenzi:</p>
+    <table style="font-size:9pt; margin:0.15cm 0 0">
+      <thead><tr><th>Dimenze</th><th>Výsledek</th><th>Omezení</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:400;white-space:nowrap"><em>(žádná)</em></td><td>1 řádek za celé období</td><td>—</td></tr>
+        <tr><td style="font-weight:600;white-space:nowrap">Účet: Den</td><td>1 řádek / den</td><td>max 31 dní</td></tr>
+        <tr><td style="font-weight:600;white-space:nowrap">Účet: Měsíc</td><td>1 řádek / měsíc</td><td>max 24 měsíců</td></tr>
+        <tr><td style="font-weight:600;white-space:nowrap">Účet: Síť</td><td>3 řádky / období (Fulltext / Obsahová / Video)</td><td>lze kombinovat s Dnem nebo Měsícem</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h1 style="margin-top:0.45cm">Omezení aktuální verze</h1>
+
+  <div style="margin-top:0.2cm">
+    <div class="limit-item">
+      <div class="limit-icon">!</div>
+      <div class="limit-text">
+        <strong>Granularita (dny / měsíce / síť) pouze pro entitu Účet.</strong>
+        Kampaně a sestavy vracejí vždy agregát za celé zvolené období — denní nebo měsíční trend zobrazíš přes entitu Účet.
+      </div>
+    </div>
+    <div class="limit-item">
+      <div class="limit-icon">!</div>
+      <div class="limit-text">
+        <strong>Inzeráty nejsou dostupné.</strong>
+        Fenix API vyžaduje 3 vrstvené volání (kampaně → sestavy → inzeráty), která přesahují časový limit Google Data Studia.
+      </div>
+    </div>
+    <div class="limit-item">
+      <div class="limit-icon">!</div>
+      <div class="limit-text">
+        <strong>PNO, CTR, Konverzní poměr — výchozí agregace SUM je vypnuta.</strong>
+        Hodnoty v souhrnném řádku tabulky nemusí být správné. Pro přesné součtové hodnoty použij entitu Účet.
+      </div>
+    </div>
+    <div class="limit-item">
+      <div class="limit-icon">!</div>
+      <div class="limit-text">
+        <strong>Výkon a API limity.</strong>
+        Načítání při větším počtu kampaní nebo delším období může trvat 10–30 s. Při opakovaném obnovení reportu v krátkém čase může Sklik API vrátit chybu „limit požadavků" — v takovém případě počkej chvíli a obnovte report znovu.
+      </div>
+    </div>
+  </div>
+
+  <h2 style="margin-top:0.5cm">Jak hlásit problémy</h2>
+  <p>Popiš nám prosím:</p>
+  <ol>
+    <li>Jaká entita — Kampaně / Sestavy / Účet</li>
+    <li>Zvolené časové období</li>
+    <li>Přesný popis chyby nebo chybějících dat</li>
+  </ol>
+
+  <div class="page-footer">
+    <span>Sklik GDS Connector v7 Fenix — Testovací dokumentace</span>
+    <span>2 / 2</span>
+  </div>
+</div>
+
+</body>
+</html>
