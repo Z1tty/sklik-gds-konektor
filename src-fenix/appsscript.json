@@ -9,7 +9,7 @@
   "urlFetchWhitelist": ["https://api.sklik.cz/v1/"],
   "runtimeVersion": "V8",
   "dataStudio": {
-    "name": "Sklik GDS connector v7.0.25 Fenix",
+    "name": "Sklik GDS connector v7.0.26 Fenix",
     "logoUrl": "https://napoveda.sklik.cz/wp-content/uploads/2024/05/sklik.jpg",
     "company": "Seznam a.s.",
     "companyUrl": "https://sklik.cz",

@@ -731,6 +731,18 @@ var Schema = function (config) {
       group: 'campaigns',
       semantics: { conceptType: 'METRIC', semanticType: 'PERCENT', defaultAggregationType: 'AVG' }
     },
+    { name: 'cgf_ft_impressions',    label: 'Kampaň: Fulltext zobrazení',       description: 'Zobrazení ve fulltextové síti. Vyplněno pouze na souhrnném řádku.', dataType: 'NUMBER', group: 'campaigns', semantics: { conceptType: 'METRIC' } },
+    { name: 'cgf_ft_clicks',         label: 'Kampaň: Fulltext prokliky',         description: 'Prokliky ve fulltextové síti. Vyplněno pouze na souhrnném řádku.', dataType: 'NUMBER', group: 'campaigns', semantics: { conceptType: 'METRIC' } },
+    { name: 'cgf_ft_totalMoney_kc',  label: 'Kampaň: Fulltext cena (Kč)',        description: 'Celková cena ve fulltextové síti v Kč. Vyplněno pouze na souhrnném řádku.', dataType: 'NUMBER', group: 'campaigns', semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' } },
+    { name: 'cgf_ft_avgPosition',    label: 'Kampaň: Fulltext průměrná pozice',  description: 'Průměrná pozice ve fulltextové síti. Vyplněno pouze na souhrnném řádku.', dataType: 'NUMBER', group: 'campaigns', semantics: { conceptType: 'METRIC', defaultAggregationType: 'AVG' } },
+    { name: 'cgf_ctx_impressions',   label: 'Kampaň: Obsahová zobrazení',        description: 'Zobrazení v obsahové síti. Vyplněno pouze na souhrnném řádku.', dataType: 'NUMBER', group: 'campaigns', semantics: { conceptType: 'METRIC' } },
+    { name: 'cgf_ctx_clicks',        label: 'Kampaň: Obsahová prokliky',         description: 'Prokliky v obsahové síti. Vyplněno pouze na souhrnném řádku.', dataType: 'NUMBER', group: 'campaigns', semantics: { conceptType: 'METRIC' } },
+    { name: 'cgf_ctx_totalMoney_kc', label: 'Kampaň: Obsahová cena (Kč)',        description: 'Celková cena v obsahové síti v Kč. Vyplněno pouze na souhrnném řádku.', dataType: 'NUMBER', group: 'campaigns', semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' } },
+    { name: 'cgf_ctx_avgPosition',   label: 'Kampaň: Obsahová průměrná pozice',  description: 'Průměrná pozice v obsahové síti. Vyplněno pouze na souhrnném řádku.', dataType: 'NUMBER', group: 'campaigns', semantics: { conceptType: 'METRIC', defaultAggregationType: 'AVG' } },
+    { name: 'cgf_vid_impressions',   label: 'Kampaň: Video zobrazení',           description: 'Zobrazení ve video síti. Vyplněno pouze na souhrnném řádku.', dataType: 'NUMBER', group: 'campaigns', semantics: { conceptType: 'METRIC' } },
+    { name: 'cgf_vid_clicks',        label: 'Kampaň: Video prokliky',            description: 'Prokliky ve video síti. Vyplněno pouze na souhrnném řádku.', dataType: 'NUMBER', group: 'campaigns', semantics: { conceptType: 'METRIC' } },
+    { name: 'cgf_vid_totalMoney_kc', label: 'Kampaň: Video cena (Kč)',           description: 'Celková cena ve video síti v Kč. Vyplněno pouze na souhrnném řádku.', dataType: 'NUMBER', group: 'campaigns', semantics: { conceptType: 'METRIC', semanticType: 'CURRENCY_CZK', semanticGroup: 'CURRENCY' } },
+    { name: 'cgf_vid_avgPosition',   label: 'Kampaň: Video průměrná pozice',     description: 'Průměrná pozice ve video síti. Vyplněno pouze na souhrnném řádku.', dataType: 'NUMBER', group: 'campaigns', semantics: { conceptType: 'METRIC', defaultAggregationType: 'AVG' } },
 
     /*
     * ######################################################

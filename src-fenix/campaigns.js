@@ -80,6 +80,8 @@ function expandCampaignConversions(campaign) {
     }
   });
 
+  var nets = campaign.networks || {};
+
   var meta = {
     cgf_campaignId:              campaign.id,
     cgf_campaignName:            campaign.name || '',
@@ -136,6 +138,18 @@ function expandCampaignConversions(campaign) {
     cgf_viewershipRate_q2:        campaign.viewershipRateMidpoint      || 0,
     cgf_viewershipRate_q3:        campaign.viewershipRateThirdQuartile || 0,
     cgf_viewershipRate_complete:  campaign.viewershipRateComplete      || 0,
+    cgf_ft_impressions:    (nets.fulltext  || {}).impressions || 0,
+    cgf_ft_clicks:         (nets.fulltext  || {}).clicks      || 0,
+    cgf_ft_totalMoney_kc:  ((nets.fulltext  || {}).totalMoney  || 0) * 0.01,
+    cgf_ft_avgPosition:    (nets.fulltext  || {}).avgPosition || 0,
+    cgf_ctx_impressions:   (nets.context   || {}).impressions || 0,
+    cgf_ctx_clicks:        (nets.context   || {}).clicks      || 0,
+    cgf_ctx_totalMoney_kc: ((nets.context   || {}).totalMoney  || 0) * 0.01,
+    cgf_ctx_avgPosition:   (nets.context   || {}).avgPosition || 0,
+    cgf_vid_impressions:   (nets.video     || {}).impressions || 0,
+    cgf_vid_clicks:        (nets.video     || {}).clicks      || 0,
+    cgf_vid_totalMoney_kc: ((nets.video     || {}).totalMoney  || 0) * 0.01,
+    cgf_vid_avgPosition:   (nets.video     || {}).avgPosition || 0,
     cgf_convName:            '',
     cgf_semEventName:        '',
     cgf_conversions:         0,
@@ -188,6 +202,18 @@ function expandCampaignConversions(campaign) {
       cgf_viewershipRate_q2:        0,
       cgf_viewershipRate_q3:        0,
       cgf_viewershipRate_complete:  0,
+      cgf_ft_impressions:    0,
+      cgf_ft_clicks:         0,
+      cgf_ft_totalMoney_kc:  0,
+      cgf_ft_avgPosition:    0,
+      cgf_ctx_impressions:   0,
+      cgf_ctx_clicks:        0,
+      cgf_ctx_totalMoney_kc: 0,
+      cgf_ctx_avgPosition:   0,
+      cgf_vid_impressions:   0,
+      cgf_vid_clicks:        0,
+      cgf_vid_totalMoney_kc: 0,
+      cgf_vid_avgPosition:   0,
       cgf_convName:            conv.name            || '',
       cgf_semEventName:        conv.semEventName    || '',
       cgf_conversions:         conv.conversions     || 0,
