@@ -1841,7 +1841,7 @@ var Schema = function (config) {
     {
       name: 'acc_date',
       label: 'Účet: Den',
-      description: 'Datum ve formátu YYYYMMDD. Vyplněno pouze při denním rozpadu (max 14 dní).',
+      description: 'Datum ve formátu YYYYMMDD. Vyplněno pouze při denním rozpadu (max 31 dní). Nevyužívat spolu s funkcí "Období porovnání".',
       dataType: 'STRING',
       group: 'account',
       semantics: {

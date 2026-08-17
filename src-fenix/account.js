@@ -53,7 +53,7 @@ function _monthLastDay(curY, curM) {
  *
  * Dimenze ovlivňují počet vrácených řádků:
  *   Bez dimenzí:              1 řádek (celé období)
- *   Účet: Den (acc_date):     1 řádek / den (max 14 dní)
+ *   Účet: Den (acc_date):     1 řádek / den (max 31 dní)
  *   Účet: Měsíc (acc_month):  1 řádek / měsíc (max 24 měsíců)
  *   Účet: Síť (acc_network):  3 řádky / období (Fulltext / Obsahová / Video)
  *   Kombinace datum+síť nebo měsíc+síť je podporována (3× více řádků).
@@ -182,11 +182,11 @@ var AccFenixClass = function(rRoot) {
     // ── Denní rozpad ─────────────────────────────────────────
     if (isDaily) {
       var daysCount = _dateDiff(this.Root.startDate, this.Root.endDate);
-      if (daysCount > 14) {
+      if (daysCount > 31) {
         DataStudioApp.createCommunityConnector()
           .newUserError()
-          .setText('Denní rozpad účtu je dostupný pro max 14 dní (Sklik API limit). Zkraťte rozsah nebo použijte dimenzi "Účet: Měsíc" pro delší období.')
-          .setDebugText('acc_ daily: ' + daysCount + ' dní (max 14)')
+          .setText('Denní rozpad účtu je dostupný pro max 31 dní. Pro porovnání s předchozím obdobím vypni "Období porovnání" v nastavení grafu — jinak GDS načítá data dvakrát a překračuje API limit.')
+          .setDebugText('acc_ daily: ' + daysCount + ' dní (max 31)')
           .throwException();
         return [];
       }
