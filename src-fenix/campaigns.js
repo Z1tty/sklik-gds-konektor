@@ -4,8 +4,8 @@ Copyright (C) 2026 Seznam.cz, a.s.
 Author: Josef Matoušek
 */
 
-// Attributes requested from GET /sklik/campaigns/
-var CAMPAIGN_ATTRS = [
+// Base attributes (always fetched) — kept short to stay within Apps Script URL limit
+var CAMPAIGN_ATTRS_BASE = [
   'id', 'name', 'status', 'isDeleted', 'type',
   'totalBudget', 'exhaustedTotalBudget', 'totalClicks', 'actualClicks',
   'startDate', 'endDate', 'createDate', 'deleteDate',
@@ -17,33 +17,43 @@ var CAMPAIGN_ATTRS = [
   'exhaustedBudgetCount', 'exhaustedBudgetShare',
   'stoppedByScheduleCount', 'stoppedByScheduleShare',
   'underForestThresholdCount', 'underForestThresholdShare',
-  'skips', 'views', 'engagement', 'watchTime',
-  'viewRate', 'skipRate', 'avgWatchTime', 'avgCostPerView',
-  'viewershipFirstQuartile', 'viewershipMidpoint', 'viewershipThirdQuartile', 'viewershipComplete',
-  'viewershipRateFirstQuartile', 'viewershipRateMidpoint', 'viewershipRateThirdQuartile', 'viewershipRateComplete',
-  'networks.fulltext.impressions', 'networks.fulltext.clicks', 'networks.fulltext.totalMoney', 'networks.fulltext.avgPosition',
-  'networks.context.impressions',  'networks.context.clicks',  'networks.context.totalMoney',  'networks.context.avgPosition',
-  'networks.video.impressions',    'networks.video.clicks',    'networks.video.totalMoney',    'networks.video.avgPosition',
   'conversionIds.conversions', 'conversionIds.conversionValue',
   'conversionIds.conversionPrice', 'conversionIds.conversionRatio',
   'conversionIds.name', 'conversionIds.semEventName'
 ];
 
+// Network breakdown — requested only when cgf_ft_* / cgf_ctx_* / cgf_vid_* fields are used
+var CAMPAIGN_ATTRS_NETWORK = [
+  'networks.fulltext.impressions', 'networks.fulltext.clicks', 'networks.fulltext.totalMoney', 'networks.fulltext.avgPosition',
+  'networks.context.impressions',  'networks.context.clicks',  'networks.context.totalMoney',  'networks.context.avgPosition',
+  'networks.video.impressions',    'networks.video.clicks',    'networks.video.totalMoney',    'networks.video.avgPosition'
+];
+
+// Video engagement + viewership — requested only when cgf_skips / cgf_viewership_* fields are used
+var CAMPAIGN_ATTRS_VIDEO = [
+  'skips', 'views', 'engagement', 'watchTime',
+  'viewRate', 'skipRate', 'avgWatchTime', 'avgCostPerView',
+  'viewershipFirstQuartile', 'viewershipMidpoint', 'viewershipThirdQuartile', 'viewershipComplete',
+  'viewershipRateFirstQuartile', 'viewershipRateMidpoint', 'viewershipRateThirdQuartile', 'viewershipRateComplete'
+];
+
 /**
  * GET /sklik/campaigns/
- * Fetches all campaigns with conversionIds breakdown for the given date range.
  * @param {UserApi}  userApi
- * @param {string}   dateFrom       YYYY-MM-DD
- * @param {string}   dateTo         YYYY-MM-DD
+ * @param {string}   dateFrom
+ * @param {string}   dateTo
  * @param {number[]} campaignIds    optional filter
  * @param {string[]} campaignTypes  optional filter
+ * @param {boolean}  ignoreDeleted
+ * @param {string[]} extraAttrs     additional attribute groups (e.g. CAMPAIGN_ATTRS_NETWORK)
  * @return {Array}
  */
-function fetchCampaigns(userApi, dateFrom, dateTo, campaignIds, campaignTypes, ignoreDeleted) {
+function fetchCampaigns(userApi, dateFrom, dateTo, campaignIds, campaignTypes, ignoreDeleted, extraAttrs) {
+  var attrs = CAMPAIGN_ATTRS_BASE.concat(extraAttrs || []);
   var params = {
     'statisticsDateFrom': dateFrom,
     'statisticsDateTo':   dateTo,
-    'a': CAMPAIGN_ATTRS
+    'a': attrs
   };
   if (campaignIds && campaignIds.length > 0) { params['ids[]'] = campaignIds.map(String); }
   if (campaignTypes && campaignTypes.length > 0) { params['type[]'] = campaignTypes; }
@@ -244,7 +254,15 @@ var CampaignsFenixClass = function(rRoot) {
 
   this.getDataFromApi = function() {
     var user = new UserApi(this.Root.fenixToken, this.Root.userId, this.Root.Log);
-    var campaigns = fetchCampaigns(user, this.Root.startDate, this.Root.endDate, this.Root.campaignsId, this.Root.campaignsTypes, this.Root.ignoreDeleted);
+    var cols = this.Root.displayColumns['campaigns'];
+    var needsNetwork = cols.indexOf('ft') !== -1 || cols.indexOf('ctx') !== -1 || cols.indexOf('vid') !== -1;
+    var needsVideo   = cols.indexOf('skips') !== -1 || cols.indexOf('views') !== -1 ||
+                       cols.indexOf('viewership') !== -1 || cols.indexOf('viewershipRate') !== -1 ||
+                       cols.indexOf('viewRate') !== -1 || cols.indexOf('skipRate') !== -1 ||
+                       cols.indexOf('engagement') !== -1 || cols.indexOf('watchTime') !== -1 ||
+                       cols.indexOf('avgWatchTime') !== -1 || cols.indexOf('avgCostPerView') !== -1;
+    var extra = (needsNetwork ? CAMPAIGN_ATTRS_NETWORK : []).concat(needsVideo ? CAMPAIGN_ATTRS_VIDEO : []);
+    var campaigns = fetchCampaigns(user, this.Root.startDate, this.Root.endDate, this.Root.campaignsId, this.Root.campaignsTypes, this.Root.ignoreDeleted, extra);
 
     if (!campaigns || campaigns.length === 0) {
       this.Root.Log.addRecord('Fenix kampaně: API vrátilo prázdný výsledek', true, 'CampaignsFenixClass.getDataFromApi');

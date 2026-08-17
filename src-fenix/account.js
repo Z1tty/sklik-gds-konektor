@@ -192,8 +192,8 @@ var AccFenixClass = function(rRoot) {
       }
       for (var di = 0; di < daysCount; di++) {
         var dayStr = _addDays(this.Root.startDate, di);
-        if (di > 0) { Utilities.sleep(250); }
-        var dayCampaigns = fetchCampaigns(user, dayStr, dayStr, [], [], this.Root.ignoreDeleted);
+        if (di > 0) { Utilities.sleep(500); }
+        var dayCampaigns = fetchCampaigns(user, dayStr, dayStr, [], [], this.Root.ignoreDeleted, CAMPAIGN_ATTRS_NETWORK);
         allRows = allRows.concat(this.aggregateCampaigns(dayCampaigns || [], _toGdsDate(dayStr), '', isNetwork));
       }
       this.Root.Log.addRecord('Fenix účet: denní rozpad ' + daysCount + ' dní → ' + allRows.length + ' řádků', true, 'AccFenixClass');
@@ -218,8 +218,8 @@ var AccFenixClass = function(rRoot) {
         var mFirst = curY + '-' + mStr + '-01';
         var mLast  = _monthLastDay(curY, curM);
         var accMonth = '' + curY + mStr;
-        if (mi > 0) { Utilities.sleep(250); }
-        var mCampaigns = fetchCampaigns(user, mFirst, mLast, [], [], this.Root.ignoreDeleted);
+        if (mi > 0) { Utilities.sleep(1500); }
+        var mCampaigns = fetchCampaigns(user, mFirst, mLast, [], [], this.Root.ignoreDeleted, CAMPAIGN_ATTRS_NETWORK);
         allRows = allRows.concat(this.aggregateCampaigns(mCampaigns || [], '', accMonth, isNetwork));
         curM++;
         if (curM > 12) { curM = 1; curY++; }
@@ -229,7 +229,7 @@ var AccFenixClass = function(rRoot) {
     }
 
     // ── Celkový součet ───────────────────────────────────────
-    var campaigns = fetchCampaigns(user, this.Root.startDate, this.Root.endDate, [], [], this.Root.ignoreDeleted);
+    var campaigns = fetchCampaigns(user, this.Root.startDate, this.Root.endDate, [], [], this.Root.ignoreDeleted, CAMPAIGN_ATTRS_NETWORK);
     if (!campaigns || campaigns.length === 0) {
       this.Root.Log.addRecord('Fenix účet: API vrátilo prázdný výsledek', true, 'AccFenixClass');
       return [];
